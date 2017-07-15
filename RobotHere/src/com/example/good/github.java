@@ -1,1 +1,8 @@
-this is a test for github!
+package com.example.good;
+
+
+class github{
+    void print(){
+        System.out.println("test");
+    }
+}
