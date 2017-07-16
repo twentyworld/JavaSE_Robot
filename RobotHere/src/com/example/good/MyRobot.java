@@ -17,8 +17,6 @@ public class MyRobot extends AdvancedRobot {
 
     Enemy enemy;
 
-
-
     @Override
     public void run() {
         // TODO Auto-generated method stub
@@ -28,9 +26,7 @@ public class MyRobot extends AdvancedRobot {
         setAdjustRadarForGunTurn(true);
 
 
-        while(true) {
-            execution();
-        }
+        while(true) Execution();
     }
 
     @Override
@@ -53,7 +49,7 @@ public class MyRobot extends AdvancedRobot {
     }
 
 
-    //this is the real algr about the robot;
+    //this is the real alg about the robot;
 	/*
 	 * generally it could separate into two steps, fire and move.
 	 *
@@ -68,20 +64,26 @@ public class MyRobot extends AdvancedRobot {
 	 *
 	 *  and these two step always stay do not depend on others.
 	 */
-    void execution() {
+    void Execution() {
         System.out.println("this is new execution");
 
         /*
         you should always scanning other robot at any time
          */
 
+        RoundMovement();
         setTurnGunLeftRadians(30);
+        fire(1);
+        execute();
+
 
 
     }
     //how to move
-    public void movement() {
+    public void RoundMovement() {
 
+        setAhead(30);
+        setTurnLeft(30);
     }
 
     //GET a random degree
