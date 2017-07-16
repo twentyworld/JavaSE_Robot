@@ -17,6 +17,11 @@ public class MyRobot extends Robot {
     public void run() {
         // TODO Auto-generated method stub
         setColor();
+        // let the gun、rader independent from the body
+        setAdjustGunForRobotTurn(true);
+        setAdjustRadarForGunTurn(true);
+
+
         while(true) {
             execution();
         }
