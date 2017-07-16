@@ -1,23 +1,29 @@
 package com.example.good;
 
+import robocode.AdvancedRobot;
 import robocode.HitWallEvent;
-import robocode.Robot;
 import robocode.ScannedRobotEvent;
 
 import java.awt.*;
 import java.util.Random;
 
 /**
- * Created by w on 2017/7/15.
+ * Created by temper on 2017/7/15.
+ * copy as you like, but with these word.
+ * at last, The forza horizon is really fun, buy is made, looking forward to driving together in the hurricane.
  */
 
-public class MyRobot extends Robot {
+public class MyRobot extends AdvancedRobot {
+
+    Enemy enemy;
+
+
 
     @Override
     public void run() {
         // TODO Auto-generated method stub
         setColor();
-        // let the gun、rader independent from the body
+        // let the gun and radar independent from the body
         setAdjustGunForRobotTurn(true);
         setAdjustRadarForGunTurn(true);
 
@@ -63,12 +69,13 @@ public class MyRobot extends Robot {
 	 *  and these two step always stay do not depend on others.
 	 */
     void execution() {
-        System.out.println("this");
+        System.out.println("this is new execution");
 
         /*
         you should always scanning other robot at any time
          */
 
+        setTurnGunLeftRadians(30);
 
 
     }
