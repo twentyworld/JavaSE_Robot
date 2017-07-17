@@ -17,9 +17,13 @@ public class MyRobot extends AdvancedRobot {
 
     Enemy enemy;
 
+    double firePower = 1;
+
     @Override
     public void run() {
         // TODO Auto-generated method stub
+
+        System.out.println("shgiahiagisgnask");
         setColor();
         // let the gun and radar independent from the body
         setAdjustGunForRobotTurn(true);
@@ -41,11 +45,38 @@ public class MyRobot extends AdvancedRobot {
     public void onScannedRobot(ScannedRobotEvent event) {
         // TODO Auto-generated method stub
        // super.onScannedRobot(event);
-        fire(1);
+
+        //this is a way to note the enemy.
+        double bearing = (getHeading() + event.getBearing()) % 360;
+        double distance = event.getDistance();
+        bearing = Math.toRadians(bearing);
+
+        double genyX = getX() + Math.sin(bearing) * distance;
+        double genyY = getY() + Math.cos(bearing) * distance;
+        enemy.x = genyX;
+        enemy.y = genyY;
+        System.out.println(genyX+" "+genyY);
+
+        enemy.distance = event.getDistance();
+        enemy.ctime = event.getTime();
+        enemy.speed = event.getVelocity();
+        enemy.head = event.getHeading();
+
+
     }
+
 
     public void setColor() {
         setAllColors(Color.YELLOW);
+    }
+
+    public void doScanner(){
+        int degree = 2;
+
+        setTurnRadarLeft(degree);
+        System.out.println("yes,find it");
+
+       // fire(1);
     }
 
 
@@ -72,13 +103,33 @@ public class MyRobot extends AdvancedRobot {
          */
 
         RoundMovement();
-        setTurnGunLeftRadians(30);
-        fire(1);
+        //setTurnGunLeftRadians(30);
+        //fire(1);
+        doScanner();
+        doGun();
         execute();
 
 
 
     }
+
+
+
+
+    void doGun()
+
+    {
+
+
+        //calculate the time of the bullet flying
+        long time = getTime() + (int) (enemy.distance / (20 - (3 * firePower)));
+
+        //where this is to show how to calculate the the degree of the gun
+        double gunOffset = getGunHeadingRadians() - absbearing(getX(), getY(), enemy.guessX(time), enemy.guessY(time));
+        setTurnGunLeftRadians(NormaliseBearing(gunOffset));  //调整相对角度到2PI内
+
+    }
+
     //how to move
     public void RoundMovement() {
 
