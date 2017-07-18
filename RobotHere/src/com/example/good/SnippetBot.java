@@ -57,7 +57,7 @@ public class SnippetBot extends AdvancedRobot
 
         target = new Enemy();               //实例化Enemy()类
 
-        target.distance = 100000;           //initialise the distance so that we can select a target
+        target.setDistance(100000);       //initialise the distance so that we can select a target
 
         setColors(Color.red, Color.blue, Color.green);    //sets the colours of the robot
 
@@ -84,7 +84,7 @@ public class SnippetBot extends AdvancedRobot
 
             doGun();                    //move the gun to predict where the enemy will be 预测敌人，调整炮管
 
-            out.println(target.distance);
+            out.println(target.getDistance());
 
             fire(firePower);            //所有动作完成后，开火
 
@@ -111,7 +111,7 @@ public class SnippetBot extends AdvancedRobot
 
     {
 
-        firePower = 400 / target.distance;//selects a bullet power based on our distance away from the target
+        firePower = 400 / target.getDistance();//selects a bullet power based on our distance away from the target
 
         //根据敌人距离来选择火力,因为本身前进，后退为300，所以火力不会过大
 
@@ -151,7 +151,7 @@ public class SnippetBot extends AdvancedRobot
 
         }
 
-        setTurnRightRadians(target.bearing + (PI / 2)); //every turn move to circle strafe the enemy
+        setTurnRightRadians(target.getBearing() + (PI / 2)); //every turn move to circle strafe the enemy
 
         //每一时间周期以敌人为中心绕圆运动
 
@@ -175,7 +175,7 @@ public class SnippetBot extends AdvancedRobot
 
         double radarOffset;  //雷达偏移量
 
-        if (getTime() - target.ctime > 4) //???why来回扫了4个回合都没扫到意味失去了目标，再全扫一遍
+        if (getTime() - target.getCtime() > 4) //???why来回扫了4个回合都没扫到意味失去了目标，再全扫一遍
 
         {
 
@@ -191,7 +191,7 @@ public class SnippetBot extends AdvancedRobot
 
             //通过扫描决定雷达旋转的弧度，"见基本原理方向剖析及目标锁定www.robochina.org".雷达弧度-敌人角度得到两者相差为旋转值
 
-            radarOffset = getRadarHeadingRadians() - absbearing(getX(), getY(), target.x, target.y);
+            radarOffset = getRadarHeadingRadians() - absbearing(getX(), getY(), target.getPoint().getX(), target.getPoint().getY());
 
             //this adds or subtracts small amounts from the bearing for the radar to produce the wobbling
 
@@ -238,7 +238,7 @@ public class SnippetBot extends AdvancedRobot
 
         //计算子弹到达目标的时间长speed = 20 - 3 * power;有计算公式,距离除速度=时间
 
-        long time = getTime() + (int) (target.distance / (20 - (3 * firePower)));
+        long time = getTime() + (int) (target.getDistance() / (20 - (3 * firePower)));
 
         //offsets the gun by the angle to the next shot based on linear targeting provided by the enemy class
 
@@ -382,7 +382,7 @@ public class SnippetBot extends AdvancedRobot
 
         //if we have found a closer robot....
 
-        if ((e.getDistance() < target.distance) || (target.name == e.getName()))
+        if ((e.getDistance() < target.getDistance()) || (target.name == e.getName()))
 
         {
 
@@ -398,19 +398,17 @@ public class SnippetBot extends AdvancedRobot
 
             //求得对手的x,y坐标，见"robocode基本原理之坐标锁定"文章
 
-            target.x = getX() + Math.sin(absbearing_rad) * e.getDistance(); //works out the x coordinate of where the target is
+            target.setPoint(new Coordination(getX() + Math.sin(absbearing_rad) * e.getDistance(),
+                    getY() + Math.cos(absbearing_rad) * e.getDistance()));
+            target.setBearing(e.getBearingRadians());
 
-            target.y = getY() + Math.cos(absbearing_rad) * e.getDistance(); //works out the y coordinate of where the target is
+            target.setHead(e.getHeadingRadians());
 
-            target.bearing = e.getBearingRadians();
+            target.setCtime(getTime());             //game time at which this scan was produced 扫描到机器人的游戏时间
 
-            target.head = e.getHeadingRadians();
+            target.setSpeed(e.getVelocity());        //得到敌人速度
 
-            target.ctime = getTime();               //game time at which this scan was produced 扫描到机器人的游戏时间
-
-            target.speed = e.getVelocity();         //得到敌人速度
-
-            target.distance = e.getDistance();
+            target.setDistance(e.getDistance());
 
         }
 
@@ -422,7 +420,7 @@ public class SnippetBot extends AdvancedRobot
 
         if (e.getName() == target.name)
 
-            target.distance = 10000; //this will effectively make it search for a new target
+            target.setDistance(10000); //this will effectively make it search for a new target
 
     }
 

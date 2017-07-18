@@ -8,5 +8,9 @@ package com.example.good;
 public class Testing {
     public static void main(String[] args){
         System.out.println(Math.sqrt(100));
+
+
+        System.out.println(Math.atan(1));
+        System.out.println(Math.sin(Math.atan(1/1.732)));
     }
 }

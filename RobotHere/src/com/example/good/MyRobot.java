@@ -23,7 +23,7 @@ public class MyRobot extends AdvancedRobot {
     public void run() {
         // TODO Auto-generated method stub
 
-        System.out.println("shgiahiagisgnask");
+        System.out.println("this is running, where are you printing at? i can't find you!!");
         setColor();
         // let the gun and radar independent from the body
         setAdjustGunForRobotTurn(true);
@@ -53,15 +53,14 @@ public class MyRobot extends AdvancedRobot {
 
         double genyX = getX() + Math.sin(bearing) * distance;
         double genyY = getY() + Math.cos(bearing) * distance;
-        enemy.x = genyX;
-        enemy.y = genyY;
+        enemy.getPoint().setX(genyX);
+        enemy.getPoint().setY(genyY);
         System.out.println(genyX+" "+genyY);
 
-        enemy.distance = event.getDistance();
-        enemy.ctime = event.getTime();
-        enemy.speed = event.getVelocity();
-        enemy.head = event.getHeading();
-
+        enemy.setDistance(event.getDistance());
+        enemy.setCtime(event.getTime());
+        enemy.setSpeed(event.getVelocity());
+        enemy.setHead(event.getHeading());
 
     }
 
@@ -122,12 +121,34 @@ public class MyRobot extends AdvancedRobot {
 
 
         //calculate the time of the bullet flying
-        long time = getTime() + (int) (enemy.distance / (20 - (3 * firePower)));
+        long time = getTime() + (int) (enemy.getDistance() / (20 - (3 * firePower)));
 
         //where this is to show how to calculate the the degree of the gun
-        double gunOffset = getGunHeadingRadians() - absbearing(getX(), getY(), enemy.guessX(time), enemy.guessY(time));
-        setTurnGunLeftRadians(NormaliseBearing(gunOffset));  //调整相对角度到2PI内
 
+        double degree = AdjustDegreeByDot(enemy.guessX(time)-getX(), enemy.guessY(time)-getY());
+        //setTurnGunLeftRadians(degree-);  //调整相对角度到2PI内
+
+
+    }
+
+    public double AdjustDegreeByDot(double x, double y){
+
+        double degree;
+
+        if(x == y&y == 0)
+            return 0;
+        if(x==0){
+            if(y>0) return Math.PI/2;
+            if(y<0) return Math.PI/2*3;
+        }
+        else if(y==0){
+            if(x>0) return 0;
+            if(x<0) return Math.PI;
+        }
+
+        degree = Math.atan(x/y);
+
+        return degree;
     }
 
     //how to move
