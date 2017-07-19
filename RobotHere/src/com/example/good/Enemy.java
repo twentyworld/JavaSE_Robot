@@ -25,7 +25,7 @@ class Enemy {
 
     private double speed;
 
-    private Coordination point;
+    private Coordination point = new Coordination(0,0);
 
     private double distance;
 
@@ -101,14 +101,11 @@ class Enemy {
 
 
 
-    public double guessX(long when) {
+    public Coordination guessPoint(double when) {
         //以扫描时和子弹到达的时间差 ＊ 最大速度=距离, 再用对手的坐标加上移动坐标得到敌人移动后的坐标
-        long diff = when - ctime;
-        return point.getX()+Math.sin(head)*speed*diff; //目标移动后的坐标
+
+        //return point.getX()+Math.sin(head)*speed*diff; //目标移动后的坐标
+        return new Coordination(point.getX()+Math.sin(head)*speed*when, point.getY()+Math.cos(head)*speed*when);
     }
 
-    public double guessY(long when) {
-        long diff = when - ctime;
-        return point.getY()+Math.cos(head)*speed*diff;
-    }
 }

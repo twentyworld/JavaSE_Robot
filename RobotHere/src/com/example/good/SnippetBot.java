@@ -246,7 +246,7 @@ public class SnippetBot extends AdvancedRobot
 
         //target.guesssX(),target.guessY()为目标移动后的坐标
 
-        double gunOffset = getGunHeadingRadians() - absbearing(getX(), getY(), target.guessX(time), target.guessY(time));
+        double gunOffset = getGunHeadingRadians() - absbearing(getX(), getY(), target.guessPoint(time).getX(), target.guessPoint(time).getY());
 
         setTurnGunLeftRadians(NormaliseBearing(gunOffset));  //调整相对角度到2PI内
 
