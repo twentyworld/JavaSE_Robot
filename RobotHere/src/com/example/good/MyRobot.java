@@ -44,7 +44,8 @@ public class MyRobot extends AdvancedRobot {
 
     @Override
     public void onHitWall(HitWallEvent event) {
-        turnLeft(180);
+        //turnLeft(180);
+        setBack(1000000);
     }
 
     @Override

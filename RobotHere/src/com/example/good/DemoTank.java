@@ -1,4 +1,4 @@
-package tankworld;
+package com.example.good;
 
 import java.awt.Color;
 

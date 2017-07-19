@@ -48,7 +48,7 @@ public class SnippetBot extends AdvancedRobot
 
     //我们坦克车头的方向
 
-    double firePower;                   //the power of the shot we will be using - set by do firePower() 设置我们的火力
+    double firePower = 1;                   //the power of the shot we will be using - set by do firePower() 设置我们的火力
 
 
     public void run()
@@ -111,7 +111,7 @@ public class SnippetBot extends AdvancedRobot
 
     {
 
-        firePower = 400 / target.getDistance();//selects a bullet power based on our distance away from the target
+        firePower = 1;//selects a bullet power based on our distance away from the target
 
         //根据敌人距离来选择火力,因为本身前进，后退为300，所以火力不会过大
 
