@@ -101,6 +101,7 @@ public class sd extends AdvancedRobot {
             pattern = (char) nextStep + pattern;
         }
 
+
         enemy.absoluteBearing = Math.atan2(enemyP.x - myP.x, enemyP.y - myP.y);
         double gunTurn = enemy.absoluteBearing - getGunHeadingRadians();
         setTurnGunRightRadians(Utils.normalRelativeAngle(gunTurn));
