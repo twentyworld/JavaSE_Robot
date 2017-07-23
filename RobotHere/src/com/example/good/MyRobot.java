@@ -37,7 +37,7 @@ public class MyRobot extends AdvancedRobot {
             //Scan();
             doScanner();
             doGun();
-            fire(1);
+            setFire(1);
             execute();
         }
     }
@@ -45,7 +45,7 @@ public class MyRobot extends AdvancedRobot {
     @Override
     public void onHitWall(HitWallEvent event) {
         //turnLeft(180);
-        setBack(1000000);
+        setBack(10000);
     }
 
     @Override
@@ -84,9 +84,9 @@ public class MyRobot extends AdvancedRobot {
         } else {
             radarGo = getRadarHeading() - AdjustDegreeByDot(enemy.getPoint().getX(), enemy.getPoint().getY());
             if (radarGo < 0)
-                radarGo -= 15;
+                radarGo -= 10;
             else
-                radarGo += 15;
+                radarGo += 10;
         }
         //setTurnRadarLeftRadians(NormaliseBearing(radarOffset)); //左转调整转动角度到PI内
         setTurnRadarLeft(radarGo);
@@ -230,11 +230,11 @@ public class MyRobot extends AdvancedRobot {
 
             if (radarOffset < 0)
 
-                radarOffset -= PI / 8;  //(0.375)
+                radarOffset -= PI / 4;  //(0.375)
 
             else
 
-                radarOffset += PI / 8;
+                radarOffset += PI / 4;
 
         }
 
@@ -313,7 +313,7 @@ public class MyRobot extends AdvancedRobot {
 
     }
 
-    public double getrange(double x1, double y1, double x2, double y2)
+    public double getrange(double x1,  double y1, double x2, double y2)
 
     {
 
