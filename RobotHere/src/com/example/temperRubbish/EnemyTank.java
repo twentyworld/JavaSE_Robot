@@ -9,14 +9,14 @@ import robocode.ScannedRobotEvent;
  * at last, The forza horizon is really fun, buy is made, looking forward to driving together in the hurricane.
  */
 public class EnemyTank {
-    double headingRadians;
-    double bearingRadians;
-    double absoluteBearingRadians;
-    double distance;
-    double time;
-    Coordination coordination;
-    double velocity;
-    double energy;
+    private double headingRadians;
+    private double bearingRadians;
+    private double absoluteBearingRadians;
+    private double distance;
+    private double time;
+    private Coordination coordination;
+    private double velocity;
+    private double energy;
 
     //got everything done
     void generate(ScannedRobotEvent event, AdvancedRobot self){
@@ -70,5 +70,70 @@ public class EnemyTank {
         temp = Double.doubleToLongBits(velocity);
         result = 31 * result + (int) (temp ^ (temp >>> 32));
         return result;
+    }
+
+
+    public double getHeadingRadians() {
+        return headingRadians;
+    }
+
+    public void setHeadingRadians(double headingRadians) {
+        this.headingRadians = headingRadians;
+    }
+
+    public double getBearingRadians() {
+        return bearingRadians;
+    }
+
+    public void setBearingRadians(double bearingRadians) {
+        this.bearingRadians = bearingRadians;
+    }
+
+    public double getAbsoluteBearingRadians() {
+        return absoluteBearingRadians;
+    }
+
+    public void setAbsoluteBearingRadians(double absoluteBearingRadians) {
+        this.absoluteBearingRadians = absoluteBearingRadians;
+    }
+
+    public double getDistance() {
+        return distance;
+    }
+
+    public void setDistance(double distance) {
+        this.distance = distance;
+    }
+
+    public double getTime() {
+        return time;
+    }
+
+    public void setTime(double time) {
+        this.time = time;
+    }
+
+    public Coordination getCoordination() {
+        return coordination;
+    }
+
+    public void setCoordination(Coordination coordination) {
+        this.coordination = coordination;
+    }
+
+    public double getVelocity() {
+        return velocity;
+    }
+
+    public void setVelocity(double velocity) {
+        this.velocity = velocity;
+    }
+
+    public double getEnergy() {
+        return energy;
+    }
+
+    public void setEnergy(double energy) {
+        this.energy = energy;
     }
 }

@@ -89,11 +89,11 @@ public class TemperRubbish extends AdvancedRobot {
 
     //radar ---->robot code tutorials
     private void setRadarHeadAt(){
-        setTurnGunRightRadians((enemyTank.absoluteBearingRadians-getRadarHeadingRadians())*1.5);
+        setTurnGunRightRadians((enemyTank.getAbsoluteBearingRadians()-getRadarHeadingRadians())*1.5);
     }
     //cal the power
     private int getPower(){
-        int power = Math.min(Math.min(4,1000/(int)enemyTank.energy),(int)getEnergy()/3);
+        int power = Math.min(Math.min(4,1000/(int)enemyTank.getEnergy()),(int)getEnergy()/3);
         bulletEnergy = power;
         bulletSpeed = Rules.getBulletSpeed(power);
         return power;

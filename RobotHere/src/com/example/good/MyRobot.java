@@ -51,6 +51,7 @@ public class MyRobot extends AdvancedRobot {
     @Override
     public void onScannedRobot(ScannedRobotEvent event) {
 
+        System.out.println("x:"+getX()+"Y:"+getY());
         //this is a way to note the enemy.
         double bearing = event.getBearing();
         double distance = event.getDistance();
