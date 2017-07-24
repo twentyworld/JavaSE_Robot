@@ -1,8 +1,10 @@
-package com.example.good;
+package com.example.temperRubbish;
 
 import robocode.*;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by temper on 2017/7/19.
@@ -14,9 +16,11 @@ public class TemperRubbish extends AdvancedRobot {
     EnemyTank enemyTank = new EnemyTank();
     private double bulletSpeed;
     double bulletEnergy;
+    long time;
     double movement = Double.POSITIVE_INFINITY;
 
     //here is about the pattern match----------->comes from the website.
+    List<EnemyTank> path = new ArrayList<>();
 
 
     @Override

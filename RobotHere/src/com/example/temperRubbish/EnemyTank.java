@@ -1,0 +1,74 @@
+package com.example.temperRubbish;
+
+import robocode.AdvancedRobot;
+import robocode.ScannedRobotEvent;
+
+/**
+ * Created by temper on 2017/7/19.
+ * copy as you like, but with these word.
+ * at last, The forza horizon is really fun, buy is made, looking forward to driving together in the hurricane.
+ */
+public class EnemyTank {
+    double headingRadians;
+    double bearingRadians;
+    double absoluteBearingRadians;
+    double distance;
+    double time;
+    Coordination coordination;
+    double velocity;
+    double energy;
+
+    //got everything done
+    void generate(ScannedRobotEvent event, AdvancedRobot self){
+        headingRadians = self.getHeading();
+        bearingRadians = event.getBearing();
+        absoluteBearingRadians = bearingRadians+self.getHeading();
+        absoluteBearingRadians = robocode.util.Utils.normalRelativeAngle(absoluteBearingRadians);
+        distance = event.getDistance();
+        time = self.getTime();
+        coordination = new Coordination(self.getX()+distance*Math.sin(absoluteBearingRadians),
+                self.getY()+distance*Math.cos(absoluteBearingRadians));
+        velocity = event.getVelocity();
+        energy = event.getEnergy();
+    }
+
+    //to find if it is back to the same place and heading
+
+
+    @Override
+    public String toString() {
+        return "EnemyTank{" +
+                "headingRadians=" + headingRadians +
+                ", bearingRadians=" + bearingRadians +
+                ", absoluteBearingRadians=" + absoluteBearingRadians +
+                ", distance=" + distance +
+                ", coordination=" + coordination +
+                ", velocity=" + velocity +
+                ", energy=" + energy +
+                '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EnemyTank enemyTank = (EnemyTank) o;
+
+        if (Double.compare(enemyTank.headingRadians, headingRadians) != 0) return false;
+        if (Double.compare(enemyTank.velocity, velocity) != 0) return false;
+        return coordination.equals(enemyTank.coordination);
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(headingRadians);
+        result = (int) (temp ^ (temp >>> 32));
+        result = 31 * result + coordination.hashCode();
+        temp = Double.doubleToLongBits(velocity);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
+    }
+}
