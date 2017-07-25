@@ -31,7 +31,6 @@ public class TemperRubbish extends AdvancedRobot {
      *              而且这个预测直线和圆周的过程最大的特点是，真的需要大量运算，都怪数值分析学得不好，感觉需要补补血了。
      * 2.终极目标是查找周期规律或者差值周期规律，查找周期规律的话，可以做到，大师差值规律比较复杂，还在找数学公式。
      */
-    //
     List<EnemyTank> path = new ArrayList<>();
 
 
