@@ -1,5 +1,7 @@
 package com.example.temperRubbish;
 
+import robocode.util.Utils;
+
 /**
  * Created by temper on 2017/7/18,下午2:24.
  * copy as you like, but with these word.
@@ -31,5 +33,28 @@ public class Coordination {
 
     public void setY(double y) {
         this.y = y;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coordination that = (Coordination) o;
+
+        if (!Utils.isNear(that.getX(),x)) return false;
+        if (!Utils.isNear(that.getY(),y)) return false;
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result;
+        long temp;
+        temp = Double.doubleToLongBits(x);
+        result = (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(y);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        return result;
     }
 }

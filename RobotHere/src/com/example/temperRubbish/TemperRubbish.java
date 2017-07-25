@@ -81,7 +81,7 @@ public class TemperRubbish extends AdvancedRobot {
         enemyTank.generate(event,this);
         setRadarHeadAt();
         if(getEnergy()>1)
-            setFire(getPower());
+            setFire(getPower(enemyTank.getDistance()));
     }
     //*****************************************************************************************************************
     //*****************************************************************************************************************
@@ -94,13 +94,19 @@ public class TemperRubbish extends AdvancedRobot {
         setTurnGunRightRadians((enemyTank.getAbsoluteBearingRadians()-getRadarHeadingRadians())*1.5);
     }
     //cal the power
-    private int getPower(){
-        int power = Math.min(Math.min(4,400/(int)enemyTank.getDistance()),(int)getEnergy()/3);
+    public int getPower(double distance){
+        int power = Math.min(Math.min(4,400/(int)distance),(int)getEnergy()/3);
         bulletEnergy = power;
         bulletSpeed = Rules.getBulletSpeed(power);
         return power;
     }
 
 
+    public Coordination getMaxCoordination() {
+        return maxCoordination;
+    }
 
+    public void setMaxCoordination(Coordination maxCoordination) {
+        this.maxCoordination = maxCoordination;
+    }
 }
