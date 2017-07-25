@@ -38,6 +38,21 @@ public class LinePathDetection extends PathDetection{
         return true;
     }
 
+    //计算什么时间，子弹和敌方tank会相遇
+    public int calculateTime(List<EnemyTank> path, TemperRubbish temper){
+        if (isLineOrganized(path))
+            return -1;
+        if (path.get(path.size()-1).getVelocity()==0)
+            return 0;
+
+        for(int  t = 0; t < 150; t++) {
+
+        }
+
+        return 0;
+    }
+
+
 
 
 

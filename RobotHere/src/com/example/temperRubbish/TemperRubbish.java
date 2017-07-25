@@ -19,6 +19,8 @@ public class TemperRubbish extends AdvancedRobot {
     long time;
     double movement = Double.POSITIVE_INFINITY;
 
+    Coordination maxCoordination;
+
     //here is about the pattern match----------->comes from the website.
     List<EnemyTank> path = new ArrayList<>();
 
@@ -93,7 +95,7 @@ public class TemperRubbish extends AdvancedRobot {
     }
     //cal the power
     private int getPower(){
-        int power = Math.min(Math.min(4,1000/(int)enemyTank.getEnergy()),(int)getEnergy()/3);
+        int power = Math.min(Math.min(4,400/(int)enemyTank.getDistance()),(int)getEnergy()/3);
         bulletEnergy = power;
         bulletSpeed = Rules.getBulletSpeed(power);
         return power;

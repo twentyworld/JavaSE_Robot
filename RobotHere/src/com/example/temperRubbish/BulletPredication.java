@@ -6,4 +6,5 @@ package com.example.temperRubbish;
  * at last, The forza horizon is really fun, buy is made, looking forward to driving together in the hurricane.
  */
 public class BulletPredication {
+
 }
