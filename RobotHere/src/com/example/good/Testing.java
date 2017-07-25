@@ -12,5 +12,6 @@ public class Testing {
 
         System.out.println(Math.atan(1));
         System.out.println(Math.sin(Math.atan(1/1.732)));
+        System.out.println(Math.rint(2.32345));
     }
 }

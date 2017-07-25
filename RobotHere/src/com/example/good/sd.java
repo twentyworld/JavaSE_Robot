@@ -41,6 +41,7 @@ public class sd extends AdvancedRobot {
         movement = Double.POSITIVE_INFINITY;
         setTurnRadarRight(400);
         do {
+            System.out.println("scan");
             scan();
             if (getDistanceRemaining() == 0) {
                 setAhead(movement = -movement);
@@ -101,25 +102,30 @@ public class sd extends AdvancedRobot {
             pattern = (char) nextStep + pattern;
         }
 
-
         enemy.absoluteBearing = Math.atan2(enemyP.x - myP.x, enemyP.y - myP.y);
         double gunTurn = enemy.absoluteBearing - getGunHeadingRadians();
         setTurnGunRightRadians(Utils.normalRelativeAngle(gunTurn));
     }
     ////////////////////////////////**MYFUNCTION**/////////////////////////////
 
+    //设置子弹强度
     public void smartFire() {
         FIRE_POWER = Math.min(Math.min(getEnergy() / 6d, 1000d / enemy.distance), enemy.energy / 3d);
         FIRE_SPEED = Rules.getBulletSpeed(FIRE_POWER);
         setFire(FIRE_POWER);
     }
 
+    //跟踪
     public void trackHim() {
+        System.out.println("track");
         double RadarOffset;
+        System.out.println("point1");
         RadarOffset = Utils.normalRelativeAngle(enemy.absoluteBearing - getRadarHeadingRadians());
         setTurnRadarRightRadians(RadarOffset * 1.2);
     }
 
+
+    //记录下所有的点
     private void record(int thisStep) {
         int maxLength = Math.min(MAX_PATTERN_LENGTH, enemyHistory.length());
         for (int i = 0; i <= maxLength; ++i) {
@@ -135,6 +141,7 @@ public class sd extends AdvancedRobot {
 
     }
 
+    //预测接下来的位置
     private int predict(String pattern) {
         int[] frequencies = null;
         for (int patternLength = Math.min(pattern.length(), MAX_PATTERN_LENGTH); frequencies == null; --patternLength) {
@@ -149,6 +156,8 @@ public class sd extends AdvancedRobot {
         return nextTick;
     }
 
+
+    //根据目前所在位置的相对角度，计算地方坦克所在位置。相对角度已经转换成绝对角度。即角度已经转换为0-360度。
     private static Point2D.Double project(Point2D.Double p, double angle,
                                           double distance) {
         double x = p.x + distance * Math.sin(angle);

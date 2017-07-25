@@ -10,6 +10,7 @@ import robocode.ScannedRobotEvent;
  */
 public class EnemyTank {
     private double headingRadians;
+    //地方坦克的相对角度bearing角度，但是这个比较扯淡的是，跟自己的heading角度有关。
     private double bearingRadians;
     private double absoluteBearingRadians;
     private double distance;
@@ -20,9 +21,10 @@ public class EnemyTank {
 
     //got everything done
     void generate(ScannedRobotEvent event, AdvancedRobot self){
-        headingRadians = self.getHeading();
-        bearingRadians = event.getBearing();
-        absoluteBearingRadians = bearingRadians+self.getHeading();
+        headingRadians = event.getHeadingRadians();
+        bearingRadians = event.getBearingRadians();
+        //网上获取到的运算公式 https://wenku.baidu.com/view/41fb6a8908a1284ac850437f.html
+        absoluteBearingRadians = bearingRadians+self.getHeadingRadians();
         absoluteBearingRadians = robocode.util.Utils.normalRelativeAngle(absoluteBearingRadians);
         distance = event.getDistance();
         time = self.getTime();

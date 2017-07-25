@@ -1,4 +1,6 @@
-package com.example.temperRubbish;
+package com.example.temperRubbish.Util;
+
+import com.example.temperRubbish.Coordination;
 
 import java.awt.geom.Point2D;
 
@@ -13,7 +15,7 @@ public class Utils {
 
     public static double PI = Math.PI;
     //计算两点之间的距离。
-    public static double calculateDistance(Coordination coordination1,Coordination coordination2){
+    public static double calculateDistance(Coordination coordination1, Coordination coordination2){
         return Math.sqrt(Math.pow(coordination2.getX()-coordination1.getX(),2)+
                 Math.pow(coordination1.getY()-coordination2.getY(),2));
     }

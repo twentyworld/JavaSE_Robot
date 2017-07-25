@@ -1,6 +1,6 @@
 package test;
 
-import com.example.temperRubbish.Utils;
+import com.example.temperRubbish.Util.Utils;
 
 import static org.junit.Assert.*;
 

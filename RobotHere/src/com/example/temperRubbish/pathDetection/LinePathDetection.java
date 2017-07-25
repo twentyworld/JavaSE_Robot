@@ -1,9 +1,8 @@
 package com.example.temperRubbish.pathDetection;
 
 import com.example.temperRubbish.*;
-import robocode.AdvancedRobot;
+import com.example.temperRubbish.Util.Utils;
 
-import java.awt.geom.Point2D;
 import java.util.List;
 
 /**
@@ -41,6 +40,13 @@ public class LinePathDetection extends PathDetection {
         return true;
     }
 
+    /**
+     * 使用的是正常的通过向量变相模拟斜率，点斜式运算方程，可以进一步优化成拟合，最小二乘法。
+     * 目前没考虑，没经过大量的测试。测试之后决定结果。
+     * @param path
+     * @param temper
+     * @return
+     */
     //计算经过多长时间，在什么位置，子弹和敌方坦克相遇。
     public int calculatePredictTank(List<EnemyTank> path, TemperRubbish temper){
         if (isLineOrganized(path))
@@ -88,14 +94,8 @@ public class LinePathDetection extends PathDetection {
         return goalCoordination;
     }
 
-
-
-
     //当前我们已知是一条直线的情况下，可以获取一条直线获取关于时间t的函数，返回的是目标tank所在的地点。
-
-
-
-//    //给定x，给出y。
+//    //给定x，给出y。对于x=3，无法运算。放弃。
 //    private boolean getLine(List<EnemyTank> path){
 //        int length = path.size();
 //        //if()

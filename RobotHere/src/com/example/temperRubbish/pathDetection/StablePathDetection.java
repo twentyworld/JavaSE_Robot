@@ -18,7 +18,7 @@ import java.util.List;
 public class StablePathDetection extends PathDetection {
 
     Coordination point;
-    //判断是否固定不动。
+
 
     @Override
     public  Coordination predictPath(List<EnemyTank> path, TemperRubbish robot) {
@@ -28,7 +28,7 @@ public class StablePathDetection extends PathDetection {
 
     }
 
-
+    //判断是否固定不动。
     public static boolean isStable(List<EnemyTank> path){
         int length = path.size();
         for(int i = length-1;i>=0&&i+4>length;i--){
