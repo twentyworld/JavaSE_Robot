@@ -2,6 +2,7 @@ package com.example.temperRubbish.pathDetection;
 
 import com.example.temperRubbish.*;
 import com.example.temperRubbish.Util.TemperUtils;
+import org.omg.CORBA.MARSHAL;
 
 import java.util.List;
 
@@ -48,49 +49,58 @@ public class LinePathDetection extends PathDetection {
      * @return
      */
     //计算经过多长时间，在什么位置，子弹和敌方坦克相遇。
-    public int calculatePredictTank(List<EnemyTank> path, TemperRubbish temper){
-        if (isLineOrganized(path))
-            return -1;
-        if (path.get(path.size()-1).getVelocity()==0)
-            return 0;
 
-        double requiredTime;
-        double mostMatchedTime = Integer.MAX_VALUE;
+    public int calculatePredictTank(List<EnemyTank> path, TemperRubbish temper){
+        if (path.size()<5) return -1;
+        if (!isLineOrganized(path)) return -1;
+        if (path.get(path.size()-1).getVelocity()==0) return 0;
+
+        double mostMatchedTime = 200.00d;
         Coordination goalCoordination;
         int time = 0;
         for(int  t = 1; t < 150; t++) {
             goalCoordination = getCoordinationByTime(path,t);
             if(!TemperUtils.isUnderArea(goalCoordination,temper.getMaxCoordination()))
                 continue;
+            //System.out.println(t);
             double distance = TemperUtils.calculateDistance(new Coordination(temper.getX(),temper.getY()),goalCoordination);
+            System.out.println(distance+"距离");
             double speed = 20-3* (temper.getPower(distance));
-            requiredTime = distance/speed;
-
-            if(mostMatchedTime<requiredTime){
-                mostMatchedTime = requiredTime;
+            System.out.println(Math.abs(distance/speed-t)+"预测时间差"+t+"前行时间");
+            if(mostMatchedTime>(Math.abs(distance/speed-t))){
+                mostMatchedTime=(Math.abs(distance/speed-t));
                 time = t;
-                if(mostMatchedTime<0.05) return time;
             }
+            //mostMatchedTime = mostMatchedTime<(Math.abs(distance/speed-t))?(Math.abs(distance/speed-t)):mostMatchedTime;
+            System.out.println(mostMatchedTime);
+            if(mostMatchedTime<0.05)
+                return time;
         }
-
-        if (mostMatchedTime<0.3) return time;
+        System.out.println(time+"返回的时间点。");
+        if (mostMatchedTime<0.5) return time;
         return -1;
     }
 
     //给定一个时间，返回一个直线运动情况下的点。
     public Coordination getCoordinationByTime(List<EnemyTank> path,int time){
-        EnemyTank startTank = path.get(path.size()-4);
+        if(path.size()<5) return null;
+        if(!(time>0))
+            return null;
+        EnemyTank startTank ;
         EnemyTank latestTank = path.get(path.size()-1);
+        if(path.size()>10)
+            startTank = path.get(path.size()-10);
+        else
+            startTank = path.get(0);
         Coordination goalCoordination = new Coordination();
 
-        double x = time*(latestTank.getCoordination().getX()-startTank.getCoordination().getX())
-                /(latestTank.getTime()-startTank.getTime())
+        double x = time*(latestTank.getCoordination().getX()-startTank.getCoordination().getX())/(latestTank.getTime()-startTank.getTime())
                 +latestTank.getCoordination().getX();
         goalCoordination.setX(x);
-        double y = time*(latestTank.getCoordination().getY()-startTank.getCoordination().getY())
-                /(latestTank.getTime()-startTank.getTime())
+        double y = time*(latestTank.getCoordination().getY()-startTank.getCoordination().getY())/(latestTank.getTime()-startTank.getTime())
                 +latestTank.getCoordination().getY();
         goalCoordination.setY(y);
+        //System.out.println(goalCoordination+"返回的预测点。");
         return goalCoordination;
     }
 

@@ -137,7 +137,6 @@ public class sd extends AdvancedRobot {
             }
             ++frequencies[thisStep];
         }
-
     }
 
     //预测接下来的位置

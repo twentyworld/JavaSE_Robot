@@ -12,6 +12,9 @@ import java.awt.geom.Point2D;
 public class TemperUtils {
 
     public static double PI = Math.PI;
+
+    public static double WIDTH = 800;
+    public static double HEIGHT = 600;
     //计算两点之间的距离。
     public static double calculateDistance(Coordination coordination1, Coordination coordination2){
         return Math.sqrt(Math.pow(coordination2.getX()-coordination1.getX(),2)+
@@ -30,16 +33,20 @@ public class TemperUtils {
                 coordination2.getY()-coordination1.getY());
     }
 
+//    public static double calculateRadian(Coordination coordination1, Coordination coordination2){
+//        Point2D point = calculateVector(coordination1,coordination2);
+//
+//
+//    }
     /**
      * 计算出向量的角度。
      */
     public static double calculateVectorIntersectionAngle(Point2D.Double point){
-        double radian = Math.acos(point.y/Math.sqrt(Math.pow(point.x,2)+Math.pow(point.y,2)));
+        double radian = Math.acos(point.x/Math.sqrt(Math.pow(point.x,2)+Math.pow(point.y,2)));
         if(point.y<0)
             radian = PI*2-radian;
         return radian;
     }
-
 
     /**
      * 计算向量之间的角度，传入的是两个向量的坐标
@@ -98,9 +105,9 @@ public class TemperUtils {
     public static double translateQuadrantToHeadingRadian(double radian){
         //先规约到-PI到PI
         radian = constrainRadianFromNegativePItoPI(radian);
-        //translate，有点懵逼，测试一下，应该是没错的。
+        //translate，有点懵逼，测试一下，应该是没错的。        ------------->测试通过。
         if      (radian == -PI) radian = 3*PI/2;
-        else if (radian>-PI &&radian<-PI/2) radian = PI-radian;
+        else if (radian>-PI &&radian<-PI/2) radian = PI/2-radian;
         else if (radian ==-PI/2) radian = PI;
         else if (radian>-PI/2&&radian<0) radian = PI/2-radian;
         else if (radian == 0) radian =PI/2;

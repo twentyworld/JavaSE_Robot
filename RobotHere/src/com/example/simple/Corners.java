@@ -84,6 +84,7 @@ public class Corners extends Robot {
 	 * onScannedRobot:  Stop and fire!
 	 */
 	public void onScannedRobot(ScannedRobotEvent e) {
+		System.out.println(getX()+" --"+getY());
 		// Should we stop, or just fire?
 		if (stopWhenSeeRobot) {
 			// Stop everything!  You can safely call stop multiple times.

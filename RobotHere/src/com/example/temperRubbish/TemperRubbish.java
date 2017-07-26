@@ -22,7 +22,13 @@ public class TemperRubbish extends AdvancedRobot {
     long time;
     double movement = Double.POSITIVE_INFINITY;
 
-    private Coordination maxCoordination;
+    //move
+    static final double BASE_MOVEMENT = 600;
+    static final double BASE_TURN = Math.PI / 1.5;
+    //static double movement;
+
+    private Coordination maxCoordination = new Coordination(TemperUtils.WIDTH, TemperUtils.HEIGHT);
+
 
     //here is about the pattern match
     /**
@@ -39,6 +45,9 @@ public class TemperRubbish extends AdvancedRobot {
 
     @Override
     public void run(){
+        setAdjustGunForRobotTurn (true);
+        //setAdjustRadarForRobotTurn(true);
+        setAdjustRadarForGunTurn (true);
         setColor();
         setTurnRadarRight(400);
         while(true){
@@ -64,31 +73,47 @@ public class TemperRubbish extends AdvancedRobot {
         //setRadarHeadAt();
         if(getEnergy()>1)
             setFire(getPower(enemyTank.getDistance()));
-
         System.out.println("track");
         trackEnemyTank();
-
         record (enemyTank);
 
         //预测位置
-        PathDetection detection = PathDetection.getPathDetection (path);
-        Coordination predictCoordination;
-        double gunTurn = 0;
-        if ( detection != null ){
-            predictCoordination = detection.predictPath (path,this);
-            System.out.println (predictCoordination+"：回传的预测路径");
-            Point2D.Double predictVector = TemperUtils.calculateVector (new Coordination (getX (),getY ()),predictCoordination);
-            System.out.println (predictVector);
-            double radian = TemperUtils.calculateVectorIntersectionAngle (predictVector);
-            System.out.println (radian+"敌方tank的绝对角度");
-            gunTurn = radian - getGunHeadingRadians ();
-        }
-        //double gunTurn = enemy.absoluteBearing - getGunHeadingRadians();
-        setTurnGunRightRadians(Utils.normalRelativeAngle(gunTurn));
-    }
 
+        //调整枪口位置。
+        double gunTurn ;
+        Coordination predictCoordination = null;
+        if (PathDetection.isOrganized(path)){
+            PathDetection detection = PathDetection.getPathDetection (path);
+            if(detection != null)
+                predictCoordination = detection.predictPath (path,this);
+        }
+        else
+            predictCoordination = enemyTank.getCoordination();
+
+        if(predictCoordination!=null){
+            gunTurn = getGunRadianByPrediction(predictCoordination);
+            setTurnGunRightRadians(gunTurn);
+        }
+
+    }
     //*****************************************************************************************************************
-    //radar ---->robot code tutorials
+
+    public double getGunRadianByPrediction(Coordination predictCoordination){
+        double gunTurn;
+        System.out.println (predictCoordination+"：回传的预测路径");
+        //向量
+        Point2D.Double predictVector = TemperUtils.calculateVector (new Coordination (getX (),getY ()),predictCoordination);
+        System.out.println (predictVector+"：回传的预测向量");
+        //向量转角度
+        double radian = TemperUtils.calculateVectorIntersectionAngle (predictVector);
+        System.out.println (radian+"向量的现象角度");
+        //转成绝对角度
+        radian = TemperUtils.translateQuadrantToHeadingRadian(radian);
+        System.out.println (radian+"敌方tank的绝对角度");
+        gunTurn = radian - getGunHeadingRadians ();
+        System.out.println(gunTurn+"旋转角度");
+        return gunTurn;
+    }
 
     /**
      * 跟踪地方坦克的位置。
@@ -112,7 +137,7 @@ public class TemperRubbish extends AdvancedRobot {
     }
     //calculate the power
     public int getPower(double distance){
-        int power = Math.min(Math.min(4,400/(int)distance),(int)getEnergy()/3);
+        int power = Math.min(Math.min(4,1000/(int)distance),(int)getEnergy()/3);
         bulletEnergy = power;
         bulletSpeed = Rules.getBulletSpeed(power);
         return power;
@@ -148,10 +173,11 @@ public class TemperRubbish extends AdvancedRobot {
     }
 
     @Override
-    public void onHitWall(HitWallEvent event) {
-        super.onHitWall(event);
+    public void onHitWall(HitWallEvent e){
+        if ( Math.abs (movement) > BASE_MOVEMENT ) {
+            movement = BASE_MOVEMENT;
+        }
     }
-
     @Override
     public void onRobotDeath(RobotDeathEvent event) {
         super.onRobotDeath(event);

@@ -31,6 +31,7 @@ public class StablePathDetection extends PathDetection {
 
     //判断是否固定不动。
     public static boolean isStable(List<EnemyTank> path){
+        if(path.size()<4) return false;
         int length = path.size();
         for(int i = length-1;i>=0&&i+4>length;i--){
             if(!path.get(i).equals(path.get(i-1)))

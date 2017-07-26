@@ -16,7 +16,7 @@ public abstract class PathDetection {
 
 
     //是否按照一定姿势（这里我们只是实现了直线[此处包括不动]和圆周运动，其他待开发。。。主要是不会）运动
-    public  boolean isOrganized(List<EnemyTank> path){
+    public static boolean isOrganized(List<EnemyTank> path){
         if (getPathDetection(path) == null)
             return false;
         return true;

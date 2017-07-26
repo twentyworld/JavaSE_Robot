@@ -1,6 +1,6 @@
 package test;
 
-import com.example.temperRubbish.Util.Utils;
+import com.example.temperRubbish.Util.TemperUtils;
 
 import static org.junit.Assert.*;
 
@@ -33,7 +33,7 @@ public class UtilsTest {
 
     @org.junit.Test
     public void translateQuadrantToHeadingRadian() throws Exception {
-    assertEquals(Math.PI,Utils.translateQuadrantToHeadingRadian(-Math.PI/2));
+    assertEquals(Math.PI,TemperUtils.translateQuadrantToHeadingRadian(-Math.PI/2));
     }
 
 
