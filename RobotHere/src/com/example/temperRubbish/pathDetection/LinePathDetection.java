@@ -73,11 +73,11 @@ public class LinePathDetection extends PathDetection {
             }
             //mostMatchedTime = mostMatchedTime<(Math.abs(distance/speed-t))?(Math.abs(distance/speed-t)):mostMatchedTime;
             System.out.println(mostMatchedTime);
-            if(mostMatchedTime<0.05)
+            if(mostMatchedTime<0.025)
                 return time;
         }
         System.out.println(time+"返回的时间点。");
-        if (mostMatchedTime<0.5) return time;
+        if (mostMatchedTime<0.15) return time;
         return -1;
     }
 
