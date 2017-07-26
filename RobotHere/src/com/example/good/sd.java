@@ -30,34 +30,33 @@ public class sd extends AdvancedRobot {
     static final double BASE_TURN = Math.PI / 1.5;
     static double movement;
 
-    public void run() {
-        setAdjustGunForRobotTurn(true);
-        setAdjustRadarForGunTurn(true);
-        setBodyColor(Color.BLACK);
-        setGunColor(Color.BLACK);
-        setRadarColor(Color.BLACK);
-        setScanColor(Color.BLACK);
+    public void run(){
+        setAdjustGunForRobotTurn (true);
+        setAdjustRadarForGunTurn (true);
+        setBodyColor (Color.BLACK);
+        setGunColor (Color.BLACK);
+        setRadarColor (Color.BLACK);
+        setScanColor (Color.BLACK);
         enemyHistory = "";
         movement = Double.POSITIVE_INFINITY;
-        setTurnRadarRight(400);
+        setTurnRadarRight (400);
         do {
-            System.out.println("scan");
-            scan();
-            if (getDistanceRemaining() == 0) {
-                setAhead(movement = -movement);
-                setTurnRightRadians(BASE_TURN);
+            System.out.println ("scan");
+            scan ();
+            if ( getDistanceRemaining () == 0 ) {
+                setAhead (movement = -movement);
+                setTurnRightRadians (BASE_TURN);
                 hithithit = false;
             }
         } while (true);
     }
 
     ////////////////////////////**EVENT**/////////////////////////////////////
-    public void onHitWall(HitWallEvent e) {
-        if (Math.abs(movement) > BASE_MOVEMENT) {
+    public void onHitWall(HitWallEvent e){
+        if ( Math.abs (movement) > BASE_MOVEMENT ) {
             movement = BASE_MOVEMENT;
         }
     }
-
     public void onRobotDeath(RobotDeathEvent e) {
         setTurnRadarRight(400);
     }

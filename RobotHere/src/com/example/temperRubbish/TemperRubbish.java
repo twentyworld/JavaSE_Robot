@@ -1,20 +1,22 @@
 package com.example.temperRubbish;
 
+import com.example.temperRubbish.Util.TemperUtils;
 import robocode.*;
 import robocode.util.Utils;
 
 import java.awt.*;
+import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by temper on 2017/7/19.
  * copy as you like, but with these word.
- * at last, The forza horizon is really fun, buy is made, looking forward to driving together in the hurricane.
+ * at last, The forza horizon 3 is really fun, buy is made, looking forward to driving together in the hurricane.
  */
 public class TemperRubbish extends AdvancedRobot {
     //int heading;
-    EnemyTank enemyTank = new EnemyTank();
+    EnemyTank enemyTank ;
     private double bulletSpeed;
     private double bulletEnergy;
     long time;
@@ -32,6 +34,7 @@ public class TemperRubbish extends AdvancedRobot {
      * 2.终极目标是查找周期规律或者差值周期规律，查找周期规律的话，可以做到，大师差值规律比较复杂，还在找数学公式。
      */
     List<EnemyTank> path = new ArrayList<>();
+    int maxPathLength = 1000;
 
 
     @Override
@@ -48,7 +51,7 @@ public class TemperRubbish extends AdvancedRobot {
             }
         }
     }
-    //*********************************************************************************************************
+    //*****************************************************************************************************************
     //set the color.
     private void setColor(){
         setColors(Color.RED,Color.RED,Color.RED);
@@ -56,19 +59,41 @@ public class TemperRubbish extends AdvancedRobot {
     //*****************************************************************************************************************
     @Override
     public void onScannedRobot(ScannedRobotEvent event) {
+        enemyTank = new EnemyTank ();
         enemyTank.generate(event,this);
         //setRadarHeadAt();
         if(getEnergy()>1)
             setFire(getPower(enemyTank.getDistance()));
 
         System.out.println("track");
-        trackHim();
+        trackEnemyTank();
+
+        record (enemyTank);
+
+        //预测位置
+        PathDetection detection = PathDetection.getPathDetection (path);
+        Coordination predictCoordination;
+        double gunTurn = 0;
+        if ( detection != null ){
+            predictCoordination = detection.predictPath (path,this);
+            System.out.println (predictCoordination+"：回传的预测路径");
+            Point2D.Double predictVector = TemperUtils.calculateVector (new Coordination (getX (),getY ()),predictCoordination);
+            System.out.println (predictVector);
+            double radian = TemperUtils.calculateVectorIntersectionAngle (predictVector);
+            System.out.println (radian+"敌方tank的绝对角度");
+            gunTurn = radian - getGunHeadingRadians ();
+        }
+        //double gunTurn = enemy.absoluteBearing - getGunHeadingRadians();
+        setTurnGunRightRadians(Utils.normalRelativeAngle(gunTurn));
     }
 
     //*****************************************************************************************************************
     //radar ---->robot code tutorials
 
-    public void trackHim() {
+    /**
+     * 跟踪地方坦克的位置。
+     */
+    public void trackEnemyTank() {
         double RadarOffset;
         //网上获取到的运算公式 https://wenku.baidu.com/view/41fb6a8908a1284ac850437f.html
         RadarOffset = Utils.normalRelativeAngle(enemyTank.getAbsoluteBearingRadians() - getRadarHeadingRadians());
@@ -77,12 +102,15 @@ public class TemperRubbish extends AdvancedRobot {
     }
 
     /**
-     * 跟踪地方坦克的位置。
+     * 记录最近的1000步的点。后期优化点的长度，这里有个remove。感觉会是最大的败笔。超过1000步数的话，每一次都复制一遍。
+     * @param enemyTank
      */
-    private void setRadarHeadAt(){
-        setTurnGunRightRadians((enemyTank.getAbsoluteBearingRadians()-getRadarHeadingRadians())*1.5);
+    private void record(EnemyTank enemyTank) {
+        if(path.size ()>=maxPathLength)
+            path.remove (0);
+        path.add (enemyTank);
     }
-    //cal the power
+    //calculate the power
     public int getPower(double distance){
         int power = Math.min(Math.min(4,400/(int)distance),(int)getEnergy()/3);
         bulletEnergy = power;
@@ -94,9 +122,9 @@ public class TemperRubbish extends AdvancedRobot {
         return maxCoordination;
     }
 
-    public void setMaxCoordination(Coordination maxCoordination) {
-        this.maxCoordination = maxCoordination;
-    }
+//    public void setMaxCoordination(Coordination maxCoordination) {
+//        this.maxCoordination = maxCoordination;
+//    }
 
 
     @Override

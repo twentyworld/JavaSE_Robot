@@ -24,6 +24,7 @@ public class StablePathDetection extends PathDetection {
     public  Coordination predictPath(List<EnemyTank> path, TemperRubbish robot) {
         int length = path.size();
         this.point = new Coordination(path.get(length-1).getCoordination().getX(),path.get(length-1).getCoordination().getY());
+        System.out.println (point);
         return this.point;
 
     }
@@ -35,6 +36,7 @@ public class StablePathDetection extends PathDetection {
             if(!path.get(i).equals(path.get(i-1)))
                 return false;
         }
+        System.out.println ("检测到是固定不动的");
         return true;
     }
 

@@ -36,6 +36,14 @@ public class Coordination {
     }
 
     @Override
+    public String toString() {
+        return "Coordination{" +
+                "x=" + x +
+                ", y=" + y +
+                '}';
+    }
+
+    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
@@ -46,6 +54,7 @@ public class Coordination {
         if (!Utils.isNear(that.getY(),y)) return false;
         return true;
     }
+
 
     @Override
     public int hashCode() {

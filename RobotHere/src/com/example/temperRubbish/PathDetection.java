@@ -22,9 +22,9 @@ public abstract class PathDetection {
         return true;
     }
 
-    public abstract Coordination predictPath(List<EnemyTank> path, TemperRubbish robot);
+    public  abstract Coordination predictPath(List<EnemyTank> path, TemperRubbish robot);
 
-    public PathDetection getPathDetection(List<EnemyTank> path){
+    public static PathDetection getPathDetection(List<EnemyTank> path){
         if (StablePathDetection.isStable(path))
             return new StablePathDetection();
         else if (LinePathDetection.isLineOrganized(path))

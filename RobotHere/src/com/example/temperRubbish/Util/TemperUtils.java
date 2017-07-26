@@ -5,13 +5,11 @@ import com.example.temperRubbish.Coordination;
 import java.awt.geom.Point2D;
 
 /**
- * Created by teemper on 2017/7/24, 20:14.
- *
- * @auther Zed.
- * copy as you like, but with these words.
- * from win.
+ * Created by temper on 2017/7/26,下午1:22.
+ * copy as you like, but with these word.
+ * at last, The forza horizon is really fun, buy is made, looking forward to driving together in the hurricane.
  */
-public class Utils {
+public class TemperUtils {
 
     public static double PI = Math.PI;
     //计算两点之间的距离。
@@ -81,10 +79,10 @@ public class Utils {
      *          |                        |     绝对角度           |
      *          |                        |                       |
      *          |              <-------- |<--------              |
-     *          |              |         | 象限角  |              |
+     *          |              |         | 象限角度|              |
      *          |      PI----->|         |        |<------0      |
      * ---------------------------------------------------------------------->
-     *          |     -PI----->|         |        |<------0    |
+     *          |     -PI----->|         |        |<------0      |
      *          |              |         |        |              |
      *          |              --------->|-------->              |
      *          |                        |                       |
@@ -126,8 +124,5 @@ public class Utils {
             return false;
         return true;
     }
-
-
-
 
 }

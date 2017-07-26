@@ -1,7 +1,7 @@
 package com.example.temperRubbish.pathDetection;
 
 import com.example.temperRubbish.*;
-import com.example.temperRubbish.Util.Utils;
+import com.example.temperRubbish.Util.TemperUtils;
 
 import java.util.List;
 
@@ -30,9 +30,9 @@ public class LinePathDetection extends PathDetection {
         for(int i =length-1;i>1&&i+5>length;i--){
             if(path.get(i).getVelocity()==0)
                 return false;
-            if(Utils.calculateVectorRadian(
-                    Utils.calculateVector(path.get(length-1).getCoordination(),path.get(i-1).getCoordination()),
-                    Utils.calculateVector(path.get(length-1).getCoordination(),path.get(i-2).getCoordination()))
+            if(TemperUtils.calculateVectorRadian(
+                    TemperUtils.calculateVector(path.get(length-1).getCoordination(),path.get(i-1).getCoordination()),
+                    TemperUtils.calculateVector(path.get(length-1).getCoordination(),path.get(i-2).getCoordination()))
                     >0.01)
                 return false;
         }
@@ -60,9 +60,9 @@ public class LinePathDetection extends PathDetection {
         int time = 0;
         for(int  t = 1; t < 150; t++) {
             goalCoordination = getCoordinationByTime(path,t);
-            if(!Utils.isUnderArea(goalCoordination,temper.getMaxCoordination()))
+            if(!TemperUtils.isUnderArea(goalCoordination,temper.getMaxCoordination()))
                 continue;
-            double distance = Utils.calculateDistance(new Coordination(temper.getX(),temper.getY()),goalCoordination);
+            double distance = TemperUtils.calculateDistance(new Coordination(temper.getX(),temper.getY()),goalCoordination);
             double speed = 20-3* (temper.getPower(distance));
             requiredTime = distance/speed;
 
