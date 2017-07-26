@@ -94,6 +94,7 @@ public class TemperRubbish extends AdvancedRobot {
             gunTurn = getGunRadianByPrediction(predictCoordination);
             setTurnGunRightRadians(gunTurn);
         }
+        else scan();
 
     }
     //*****************************************************************************************************************
