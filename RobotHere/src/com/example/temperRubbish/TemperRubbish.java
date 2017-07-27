@@ -70,7 +70,6 @@ public class TemperRubbish extends AdvancedRobot {
     public void onScannedRobot(ScannedRobotEvent event) {
         enemyTank = new EnemyTank ();
         enemyTank.generate(event,this);
-        //setRadarHeadAt();
         if(getEnergy()>1)
             setFire(getPower(enemyTank.getDistance()));
         System.out.println("track");
@@ -78,7 +77,6 @@ public class TemperRubbish extends AdvancedRobot {
         record (enemyTank);
 
         //预测位置
-
         //调整枪口位置。
         double gunTurn ;
         Coordination predictCoordination = null;
@@ -87,17 +85,16 @@ public class TemperRubbish extends AdvancedRobot {
             if(detection != null)
                 predictCoordination = detection.predictPath (path,this);
         }
-        else
-            predictCoordination = enemyTank.getCoordination();
+        else predictCoordination = enemyTank.getCoordination();
 
-        if(predictCoordination!=null){
+        if(predictCoordination!=null&&TemperUtils.isUnderArea(predictCoordination,maxCoordination)){
             gunTurn = getGunRadianByPrediction(predictCoordination);
             setTurnGunRightRadians(gunTurn);
         }
+        else scan();
 
     }
     //*****************************************************************************************************************
-
     public double getGunRadianByPrediction(Coordination predictCoordination){
         double gunTurn;
         System.out.println (predictCoordination+"：回传的预测路径");

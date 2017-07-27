@@ -88,10 +88,15 @@ public class LinePathDetection extends PathDetection {
             return null;
         EnemyTank startTank ;
         EnemyTank latestTank = path.get(path.size()-1);
-        if(path.size()>10)
-            startTank = path.get(path.size()-10);
-        else
-            startTank = path.get(0);
+
+        int bestChoice = 2;
+        for (int i =2;i<10;i++){
+            if(path.get(path.size()-i).getVelocity()-latestTank.getVelocity()<0.3) bestChoice = i;
+            else break;
+        }
+        if(bestChoice>2) startTank = path.get(path.size()-bestChoice);
+        else return null;
+
         Coordination goalCoordination = new Coordination();
 
         double x = time*(latestTank.getCoordination().getX()-startTank.getCoordination().getX())/(latestTank.getTime()-startTank.getTime())
