@@ -209,7 +209,7 @@ public class TemperRubbish extends AdvancedRobot {
 
     @Override
     public void onRoundEnded(RoundEndedEvent event) {
-        path = new ArrayList<>();
+        //path = new ArrayList<>();
     }
 
     @Override
