@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="PFMgr">
+        <wb-resource deploy-path="/" source-path="/EarContent" tag="defaultRootSource"/>
+        <dependent-module archiveName="PFMgrEJB.jar" deploy-path="/" handle="module:/resource/PFMgrEJB/PFMgrEJB">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="PFMgrEJBClient.jar" deploy-path="/" handle="module:/resource/PFMgrEJBClient/PFMgrEJBClient">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="PMgrClient.jar" deploy-path="/" handle="module:/resource/PMgrClient/PMgrClient">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="PFMgrData.jar" deploy-path="/lib" handle="module:/resource/PFMgrData/PFMgrData">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
