@@ -115,10 +115,9 @@ public class LinePathDetection extends PathDetection {
                 +latestTank.getCoordination().getY();
         goalCoordination.setY(y);
         //System.out.println(goalCoordination+"返回的预测点。");
-        if (TemperUtils.isUnderArea(goalCoordination))
-            return goalCoordination;
-        else
-            return null;
+        //if (TemperUtils.isUnderArea(goalCoordination))
+        return goalCoordination;
+
     }
 
     //当前我们已知是一条直线的情况下，可以获取一条直线获取关于时间t的函数，返回的是目标tank所在的地点。
