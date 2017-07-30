@@ -76,6 +76,21 @@ public class TemperUtils {
             radian -=Math.PI*2;
         return radian;
     }
+    /**
+     * 约束角度，约束到-PI到PI之间.=====》主要是为了cosA的角度问题的规约。
+     * @param radian
+     * @return
+     */
+    public static double constrainRadianFromZeroToDoublePI(double radian){
+
+        if(radian<0)
+            radian +=Math.PI*2;
+        if (radian>Math.PI*2)
+            radian -=Math.PI*2;
+        return radian;
+    }
+
+
 
     /**                                  ^
      *                                   |
@@ -124,10 +139,12 @@ public class TemperUtils {
      * test if the coordination is useful or in the area;
      * Coordination1 ->the coordination, Coordination2 ->the area ->the top right corner
      */
-    public static boolean isUnderArea(Coordination coordination1, Coordination coordination2){
+    public static boolean isUnderArea(Coordination coordination1){
+        if (coordination1 == null)
+            return false;
         if(coordination1.getX()<0||coordination1.getY()<0)
             return false;
-        if(coordination1.getX()>coordination2.getX()||coordination1.getX()>coordination2.getY())
+        if(coordination1.getX()>WIDTH||coordination1.getY()>HEIGHT)
             return false;
         return true;
     }
