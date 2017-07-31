@@ -36,15 +36,6 @@ public class EnemyTank {
 
     //to find if it is back to the same place and heading
 
-    boolean isStable(Object object){
-        if (this == object) return true;
-        if (object == null || getClass() != object.getClass()) return false;
-        EnemyTank enemyTank = (EnemyTank) object;
-
-        if (Double.compare(enemyTank.headingRadians, headingRadians) != 0) return false;
-        if (Double.compare(enemyTank.velocity, velocity) != 0) return false;
-        return coordination.equals(enemyTank.coordination);
-    }
 
     @Override
     public String toString() {
@@ -59,6 +50,7 @@ public class EnemyTank {
                 '}';
     }
 
+    //same place with same heading.
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -70,6 +62,20 @@ public class EnemyTank {
         if (Double.compare(enemyTank.velocity, velocity) != 0) return false;
         return coordination.equals(enemyTank.coordination);
     }
+
+    //same place only, ignore whether heading the same.
+    public boolean isStable(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        EnemyTank enemyTank = (EnemyTank) o;
+
+        //if (Double.compare(enemyTank.headingRadians, headingRadians) != 0) return false;
+        if (Double.compare(enemyTank.velocity, velocity) != 0) return false;
+        return coordination.equals(enemyTank.coordination);
+    }
+
+
 
     @Override
     public int hashCode() {
