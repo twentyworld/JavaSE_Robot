@@ -15,7 +15,14 @@ public class TemperUtils {
 
     public static double WIDTH = 800;
     public static double HEIGHT = 600;
-    //计算两点之间的距离。
+
+
+    /**
+     * 计算两点之间的距离。
+     * @param coordination1
+     * @param coordination2
+     * @return
+     */
     public static double calculateDistance(Coordination coordination1, Coordination coordination2){
         return Math.sqrt(Math.pow(coordination2.getX()-coordination1.getX(),2)+
                 Math.pow(coordination1.getY()-coordination2.getY(),2));
@@ -92,30 +99,30 @@ public class TemperUtils {
 
 
 
-    /**                                  ^
-     *                                   |
-     *                                   |
-     *                                   |
-     *                               360 | 0
-     *          ^----------------------->|----------------------->
-     *          |                        |     绝对角度           |
-     *          |                        |                       |
-     *          |              <-------- |<--------              |
-     *          |              |         | 象限角度|              |
-     *          |      PI----->|         |        |<------0      |
-     * ---------------------------------------------------------------------->
-     *          |     -PI----->|         |        |<------0      |
-     *          |              |         |        |              |
-     *          |              --------->|-------->              |
-     *          |                        |                       |
-     *           <-----------------------|<----------------------V
-     *                                   |
-     *                                   |
-     *                                   |
-     *                                   |
-     *                                   |
+    /**                                  ^                                                    <br/>
+     *                                   |                                                    <br/>
+     *                                   |                                                    <br/>
+     *                                   |                                                    <br/>
+     *                               360 | 0                                                  <br/>
+     *          ^----------------------->|----------------------->                            <br/>
+     *          |                        |     绝对角度           |                            <br/>
+     *          |                        |                       |                            <br/>
+     *          |              <-------- |<--------              |                            <br/>
+     *          |              |         | 象限角度|              |                            <br/>
+     *          |      PI----->|         |        |<------0      |                            <br/>
+     * ---------------------------------------------------------------------->                <br/>
+     *          |     -PI----->|         |        |<------0      |                            <br/>
+     *          |              |         |        |              |                            <br/>
+     *          |              --------->|-------->              |                            <br/>
+     *          |                        |                       |                            <br/>
+     *           <-----------------------|<----------------------V                            <br/>
+     *                                   |                                                    <br/>
+     *                                   |                                                    <br/>
+     *                                   |                                                    <br/>
+     *                                   |                                                    <br/>
+     *                                   |                                                    <br/>
      *
-     *转换象限角度到绝对角度。radian角度
+     *转换象限角度到绝对角度。radian角度<br/>
      */
     public static double translateQuadrantToHeadingRadian(double radian){
         //先规约到-PI到PI
@@ -135,9 +142,9 @@ public class TemperUtils {
 
 
     /**
-     * 检查点是否还在区域内部
-     * test if the coordination is useful or in the area;
-     * Coordination1 ->the coordination, Coordination2 ->the area ->the top right corner
+     * 检查点是否还在区域内部<br/>
+     * test if the coordination is useful or in the area;<br/>
+     * Coordination1 ->the coordination, Coordination2 ->the area ->the top right corner<br/>
      */
     public static boolean isUnderArea(Coordination coordination1){
         if (coordination1 == null)

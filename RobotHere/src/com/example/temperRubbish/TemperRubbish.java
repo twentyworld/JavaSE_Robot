@@ -10,9 +10,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by temper on 2017/7/19.
- * copy as you like, but with these word.
- * at last, The forza horizon 3 is really fun, buy is made, looking forward to driving together in the hurricane.
+ * Created by temper on 2017/7/19.<br/>
+ * copy as you like, but with these word.<br/>
+ * at last, The forza horizon 3 is really fun, buy is made, looking forward to driving together in the hurricane.<br/>
+ *
+ * 这几天的调参之旅让我充分认识到了，我好想没事儿学习一下啊，
+ * 操，参数的调整对结果的影响极其大，我需要分解算法了，然后针对不同的预测模式，搞新闻了。
+ * 但是学习的代价又很高，我需要去学习怎么学习。还是整算法靠谱。
  */
 public class TemperRubbish extends AdvancedRobot {
     //int heading;
@@ -23,19 +27,19 @@ public class TemperRubbish extends AdvancedRobot {
     static double movement ;
 
     //move
-    static final double BASE_MOVEMENT = 200;
+    static final double BASE_MOVEMENT = 300;
     static final double BASE_TURN = Math.PI / 3;
     //static Coordination maxCoordination = new Coordination(TemperUtils.WIDTH, TemperUtils.HEIGHT);
 
 
     //here is about the pattern match
     /**
-     * path。是通过记录所有的点，然后查找规律
-     * 1.今天是7.25，目前已经能做到固定点，直线运动，
-     *              圆周运动（但是一般子弹速度较慢，等到了，人家一般撞墙后，变圆心了，很尴尬，除非碰巧遇到了正好在区域内画圆的）
-     *              圆周运动需要优化的是，虽然可以找到点，但是，遇到变圆心，浪费很多子弹，在考虑，是不是对于这种，找到周期规律再决定如何打。
-     *              而且这个预测直线和圆周的过程最大的特点是，真的需要大量运算，都怪数值分析学得不好，感觉需要补补血了。
-     * 2.终极目标是查找周期规律或者差值周期规律，查找周期规律的话，可以做到，但是差值规律比较复杂，还在找数学公式。
+     * path。是通过记录所有的点，然后查找规律<br/>
+     * 1.今天是7.25，目前已经能做到固定点，直线运动，<br/>
+     *              圆周运动（但是一般子弹速度较慢，等到了，人家一般撞墙后，变圆心了，很尴尬，除非碰巧遇到了正好在区域内画圆的）<br/>
+     *              圆周运动需要优化的是，虽然可以找到点，但是，遇到变圆心，浪费很多子弹，在考虑，是不是对于这种，找到周期规律再决定如何打。<br/>
+     *              而且这个预测直线和圆周的过程最大的特点是，真的需要大量运算，都怪数值分析学得不好，感觉需要补补血了。<br/>
+     * 2.终极目标是查找周期规律或者差值周期规律，查找周期规律的话，可以做到，但是差值规律比较复杂，还在找数学公式。<br/>
      */
     List<EnemyTank> path = new ArrayList<>();
     int maxPathLength = 1000;
@@ -163,9 +167,10 @@ public class TemperRubbish extends AdvancedRobot {
             path.remove (0);
         path.add (enemyTank);
     }
+    //**********************打赢鑫哥stable的终极利器，调整power值。鑫哥stable爆炸消耗能量，耗死他。************************
     //calculate the power
     public int getPower(double distance){
-        int power = Math.min(Math.min(4,1000/(int)distance),(int)getEnergy()/3);
+        int power = Math.min(Math.min(2,1000/(int)distance),(int)getEnergy()/3);
         bulletEnergy = power;
         bulletSpeed = Rules.getBulletSpeed(power);
         return power;
