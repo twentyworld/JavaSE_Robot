@@ -14,9 +14,8 @@ import java.util.List;
  * copy as you like, but with these word.<br/>
  * at last, The forza horizon 3 is really fun, buy is made, looking forward to driving together in the hurricane.<br/>
  *
- * 这几天的调参之旅让我充分认识到了，我好想没事儿学习一下啊，
- * 操，参数的调整对结果的影响极其大，我需要分解算法了，然后针对不同的预测模式，搞新闻了。
- * 但是学习的代价又很高，我需要去学习怎么学习。还是整算法靠谱。
+ * 这几天的调参之旅充分认识到，
+ * 参数的调整对结果的影响极其大，需要分解算法，然后针对不同的预测模式，搞新闻。
  */
 public class TemperRubbish extends AdvancedRobot {
     //int heading;
