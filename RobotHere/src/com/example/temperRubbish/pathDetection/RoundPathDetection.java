@@ -35,11 +35,33 @@ public class RoundPathDetection extends PathDetection {
      * @return
      */
     public static boolean isRoundOrganized(List<EnemyTank> path){
-        if(path.size()<4)
+        if(path.size()<5)
             return false;
+        for(int i = 0;i<3;i++){
+
+            System.arraycopy();
+        }
+
 
         return false;
     }
+
+
+    //根据三个点生成行列式。
+    private double[][] learner(EnemyTank[] path){
+        if (path.length!=3) return new double[3][4];
+
+        double[][] determinant = new double[3][4];
+        for(int i = 0;i<path.length;i++){
+            determinant[i][0] = path[i].getCoordination ().getX ();
+            determinant[i][1] = path[i].getCoordination ().getY ();
+            determinant[i][2] = 1;
+            determinant[i][3] = -(Math.pow(path[i].getCoordination ().getX (),2)+Math.pow(path[i].getCoordination().getY(),2));
+        }
+        return determinant;
+    }
+
+
 
 
     //克莱姆法则搞定他之
