@@ -1,6 +1,7 @@
 package com.example.temperRubbish;
 
 import com.example.temperRubbish.pathDetection.LinePathDetection;
+import com.example.temperRubbish.pathDetection.RegularPathDetection;
 import com.example.temperRubbish.pathDetection.RoundPathDetection;
 import com.example.temperRubbish.pathDetection.StablePathDetection;
 import robocode.AdvancedRobot;
@@ -25,14 +26,18 @@ public abstract class PathDetection {
     public  abstract Coordination predictPath(List<EnemyTank> path, TemperRubbish robot);
 
     public static PathDetection getPathDetection(List<EnemyTank> path){
+
         if (StablePathDetection.isStable(path))
             return new StablePathDetection();
+        else if (RegularPathDetection.isRegualrOrganized(path))
+            return new RegularPathDetection();
         else if (LinePathDetection.isLineOrganized(path))
             return new LinePathDetection();
         else if (RoundPathDetection.isRoundOrganized(path))
             return new RoundPathDetection();
         else return null;
     }
+
 
 
 

@@ -12,8 +12,13 @@ public class TestTank extends AdvancedRobot {
 
     @Override
     public void run() {
-        setTurnRadarLeft(600);
 
+        while(true){
+            setFire(1);
+
+            turnGunLeft(360);
+            execute();
+        }
     }
 
 }

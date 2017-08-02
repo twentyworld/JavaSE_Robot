@@ -41,15 +41,6 @@ public class LinePathDetection extends PathDetection {
         return true;
     }
 
-    /**
-     * 使用的是正常的通过向量变相模拟斜率，点斜式运算方程，可以进一步优化成拟合，最小二乘法。<br/>
-     * 目前没考虑，没经过大量的测试。测试之后决定结果。<br/>
-     * @param path
-     * @param temper
-     * @return
-     */
-
-
 
     /**\
      * 计算经过多长时间，在什么位置，子弹和敌方坦克相遇。<br/>
@@ -62,15 +53,14 @@ public class LinePathDetection extends PathDetection {
      */
     public double calculatePredictTank(List<EnemyTank> path, TemperRubbish temper){
         if (path.size()<5) return -1;
-        if (!isLineOrganized(path)) return -1;
+        //if (!isLineOrganized(path)) return -1;
         if (path.get(path.size()-1).getVelocity()==0) return 0;
         double mostMatchedTime = 200.00d;
         Coordination goalCoordination;
         double time = 0;
         for(double t = 1; t < 150; t=t+0.5) {
             goalCoordination = getCoordinationByTime(path,t);
-            if(!TemperUtils.isUnderArea(goalCoordination))
-                continue;
+            if(!TemperUtils.isUnderArea(goalCoordination)) continue;
             //System.out.println(t);
             double distance = TemperUtils.calculateDistance(new Coordination(temper.getX(),temper.getY()),goalCoordination);
             //System.out.println(distance+"距离");
@@ -85,7 +75,7 @@ public class LinePathDetection extends PathDetection {
             if(mostMatchedTime<0.005)
                 return time;
         }
-        System.out.println(time+"返回的时间点。");
+        //System.out.println(time+"返回的时间点。");
         if (mostMatchedTime<0.1) return time;
         return -1;
     }

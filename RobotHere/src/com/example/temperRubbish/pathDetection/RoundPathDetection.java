@@ -5,9 +5,7 @@ import com.example.temperRubbish.EnemyTank;
 import com.example.temperRubbish.PathDetection;
 import com.example.temperRubbish.TemperRubbish;
 import com.example.temperRubbish.Util.TemperUtils;
-import robocode.AdvancedRobot;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -19,29 +17,56 @@ import java.util.List;
  */
 public class RoundPathDetection extends PathDetection {
     //如果是圆周运动，初始化这两个变量
-    static Coordination coordination = new Coordination();
-    static double radius = 0;
+    private static Coordination coordination = new Coordination();
+    private static double radius = 0;
 
 
     @Override
     public Coordination predictPath(List<EnemyTank> path, TemperRubbish robot) {
-
-
-        return new Coordination(0, 0
-        );
+        return getCoordinationByTime(path,calculatePredictTank(path,robot));
     }
 
+    private double calculatePredictTank(List<EnemyTank> path, TemperRubbish temper){
+        if (path.size()<5) return -1;
+        if (path.get(path.size()-1).getVelocity()==0) return 0;
+        double mostMatchedTime = 200.00d;
+        Coordination goalCoordination;
+        double time = 0;
+        for(double t = 0.5; t < 150; t=t+0.2) {
+            goalCoordination = getCoordinationByTime(path,t);
+            if(!TemperUtils.isUnderArea(goalCoordination)) return -1;
+            //System.out.println(t);
+            double distance = TemperUtils.calculateDistance(new Coordination(temper.getX(),temper.getY()),goalCoordination);
+            //System.out.println(distance+"距离");
+            double speed = 20-3* (temper.getPower(distance));
+            //System.out.println(Math.abs(distance/speed-t)+"预测时间差"+t+"前行时间");
+            if(mostMatchedTime>(Math.abs(distance/speed-t))){
+                mostMatchedTime=(Math.abs(distance/speed-t));
+                time = t;
+            }
+            //mostMatchedTime = mostMatchedTime<(Math.abs(distance/speed-t))?(Math.abs(distance/speed-t)):mostMatchedTime;
+            //System.out.println(mostMatchedTime);
+            if(mostMatchedTime<0.005) return time;
+        }
+        //System.out.println(time+"返回的时间点。");
+        if (mostMatchedTime<0.1) return time;
+        return -1;
+    }
 
-    public Coordination getCoordinationByTime(List<EnemyTank> path, double t) {
-        if (path.size() < 5) return new Coordination();
+    //给定一个时间，返回一个圆周运动情况下的点。
+    private Coordination getCoordinationByTime(List<EnemyTank> path, double time) {
+        if (path.size() < 5) return null;
+        if (time<=0) return null;
+        //Coordination[] enemyTanksCoordination = new Coordination[3];
+        //double[] result = cramer(generateDeterminant(enemyTanksCoordination));
         EnemyTank start = path.get(path.size()-5);
         EnemyTank end = path.get(path.size()-1) ;
 
+        double radianEnd=TemperUtils.calculateVectorIntersectionRadian(TemperUtils.calculateVector(coordination,end.getCoordination()));
+        double radianStart=TemperUtils.calculateVectorIntersectionRadian(TemperUtils.calculateVector(coordination,start.getCoordination()));
 
-
-        TemperUtils.calculateVectorIntersectionRadian(TemperUtils.calculateVector(,end))
-
-
+        double predictRadian = (radianEnd-radianStart)*time/(end.getTime()-start.getTime());
+        return new Coordination(coordination.getX()+radius*Math.cos(predictRadian),coordination.getY()+radius*Math.sin(predictRadian));
     }
 
     //判断是否做得是圆周运动
@@ -50,8 +75,8 @@ public class RoundPathDetection extends PathDetection {
      * 无非就是矩阵运算。求解三元一次方程，确定圆的半径和圆心。<br/>
      * 但是很傻比的是，存在误差值。<br/>
      *
-     * @param path
-     * @return
+     * @param path-->就是记录的所有的地方坦克的信息
+     * @return boolean
      */
     public static boolean isRoundOrganized(List<EnemyTank> path) {
         if (path.size() < 5) return false;
@@ -65,13 +90,14 @@ public class RoundPathDetection extends PathDetection {
             }
             double[] result1 = cramer(generateDeterminant(enemyTanksCoordination1));
             double[] result2 = cramer(generateDeterminant(enemyTanksCoordination2));
+
             if (calculateRadius(result1) <= 0 || calculateRadius(result2) <= 0) return false;
-
             if (!isCircleValuable(result1, result2)) return false;
+            if(!new Coordination(-result1[0]/2,-result1[1]/2).similar(coordination)){
+                coordination = new Coordination(-result1[0]/2,-result1[1]/2);
+                radius = Math.sqrt(calculateRadius(result1));
+            }
         }
-
-
-
         System.out.println("圆周运动是的。");
         return true;
     }
@@ -80,12 +106,11 @@ public class RoundPathDetection extends PathDetection {
      * 计算方程中的半径的平方。<br/>
      * 半径的平方可能为负数，说明圆不存在。
      *
-     * @param result
+     * @param result 数组
      * @return radius
      */
     private static double calculateRadius(double[] result) {
         return Math.sqrt(-result[2] + (result[0] * result[0] + result[1] * result[1]) / 4);
-
     }
 
     private static boolean isCircleValuable(double[] result1, double[] result2) {
@@ -107,9 +132,7 @@ public class RoundPathDetection extends PathDetection {
                 new Coordination(-result2[0] / 2, -result2[1] / 2));
 //        System.out.println(CircleCenterDistance/(calculateRadius(result1)+calculateRadius(result2)));
 //        System.out.println(CircleCenterDistance/(calculateRadius(result1)+calculateRadius(result2))>0.005);
-        if (CircleCenterDistance / (calculateRadius(result1) + calculateRadius(result2)) > 0.00005)
-            return false;
-        return true;
+        return !(CircleCenterDistance / (calculateRadius(result1) + calculateRadius(result2)) > 0.00005);
 
     }
 
@@ -219,6 +242,26 @@ public class RoundPathDetection extends PathDetection {
 
     }
 
+    public static double getX() {
+        return coordination.getX();
+    }
+
+    public static void setX(double x) {
+        coordination.setX(x);
+    }
+
+    public static double getY() {
+        return coordination.getY();
+    }
+
+    public static void setY(double y) {
+        coordination.setY(y);
+    }
+
+    public static boolean similar(Object o) {
+        return coordination.similar(o);
+    }
+
     /**
      * 传入的是多维数组，也就是多元一次方程的矩阵形式，传出的是结果。<br/>
      * 这个是消元法，菜鸡解法。还有个克莱姆法则<br/>
@@ -262,5 +305,4 @@ public class RoundPathDetection extends PathDetection {
         }
         System.out.println("]");
     }
-    //克莱姆法则求解行列式。
 }

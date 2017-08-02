@@ -18,18 +18,16 @@ import java.util.List;
  * 参数的调整对结果的影响极其大，需要分解算法，然后针对不同的预测模式，搞新闻。
  */
 public class TemperRubbish extends AdvancedRobot {
-    //int heading;
-    EnemyTank enemyTank ;
+
+    private EnemyTank enemyTank ;
     private double bulletSpeed;
     private double bulletEnergy;
-    long time;
-    static double movement ;
+    private static double movement ;
 
     //move
-    static final double BASE_MOVEMENT = 300;
-    static final double BASE_TURN = Math.PI / 3;
+    private static final double BASE_MOVEMENT = 300;
+    private static final double BASE_TURN = Math.PI / 3;
     //static Coordination maxCoordination = new Coordination(TemperUtils.WIDTH, TemperUtils.HEIGHT);
-
 
     //here is about the pattern match
     /**
@@ -40,8 +38,7 @@ public class TemperRubbish extends AdvancedRobot {
      *              而且这个预测直线和圆周的过程最大的特点是，真的需要大量运算，都怪数值分析学得不好，感觉需要补补血了。<br/>
      * 2.终极目标是查找周期规律或者差值周期规律，查找周期规律的话，可以做到，但是差值规律比较复杂，还在找数学公式。<br/>
      */
-    List<EnemyTank> path = new ArrayList<>();
-    int maxPathLength = 1000;
+    private List<EnemyTank> path = new ArrayList<>();
 
 
     @Override
@@ -55,14 +52,12 @@ public class TemperRubbish extends AdvancedRobot {
 
         do{
             //System.out.println("scan");
-            //System.out.println("scan");
             execute();
             //scan();
             if(getDistanceRemaining()==0){
                 setAhead(movement = -movement);
                 setTurnRightRadians(BASE_TURN);
             }
-
         }while (true);
     }
     //*****************************************************************************************************************
@@ -88,15 +83,15 @@ public class TemperRubbish extends AdvancedRobot {
         //System.out.println("执行到了-1的地点：");
         double gunTurn ;
         Coordination predictCoordination = null;
-        if (PathDetection.isOrganized(path)){
-            PathDetection detection = PathDetection.getPathDetection (path);
-            if(detection != null)
-                predictCoordination = detection.predictPath (path,this);
-            //System.out.println("执行到了0的地点：");
-        }
+        PathDetection detection = null;
+        //detection = PathDetection.getPathDetection (path);
+        if((detection = PathDetection.getPathDetection (path)) != null)
+            predictCoordination = detection.predictPath (path,this);
+        //System.out.println("执行到了0的地点：");
+
         else{
             predictCoordination = enemyTank.getCoordination();
-            //System.out.println("什么都没检测到！");
+            System.out.println("什么都没检测到！");
         }
 
         //System.out.println(predictCoordination+"执行到了这个地点！");
@@ -114,7 +109,7 @@ public class TemperRubbish extends AdvancedRobot {
         }
     }
 
-    public double getGunRadianByPrediction(Coordination predictCoordination){
+    private double getGunRadianByPrediction(Coordination predictCoordination){
         double gunTurn;
         //System.out.println (predictCoordination+"：回传的预测路径");
         //向量
@@ -149,7 +144,7 @@ public class TemperRubbish extends AdvancedRobot {
     /**
      * 跟踪地方坦克的位置。
      */
-    public void trackEnemyTank() {
+    private void trackEnemyTank() {
         double RadarOffset;
         //网上获取到的运算公式 https://wenku.baidu.com/view/41fb6a8908a1284ac850437f.html
         RadarOffset = Utils.normalRelativeAngle(enemyTank.getAbsoluteBearingRadians() - getRadarHeadingRadians());
@@ -162,14 +157,15 @@ public class TemperRubbish extends AdvancedRobot {
      * @param enemyTank
      */
     private void record(EnemyTank enemyTank) {
-        if(path.size ()>=maxPathLength)
+        int maxPathLength = 1000;
+        if(path.size ()>= maxPathLength)
             path.remove (0);
         path.add (enemyTank);
     }
     //**********************打赢鑫哥stable的终极利器，调整power值。鑫哥stable爆炸消耗能量，耗死他。************************
     //calculate the power
     public int getPower(double distance){
-        int power = Math.min(Math.min(2,1000/(int)distance),(int)getEnergy()/3);
+        int power = Math.min(Math.min(3,1000/(int)distance),(int)getEnergy()/3);
         bulletEnergy = power;
         bulletSpeed = Rules.getBulletSpeed(power);
         return power;
@@ -198,24 +194,20 @@ public class TemperRubbish extends AdvancedRobot {
     public void onHitByBullet(HitByBulletEvent event) {
         super.onHitByBullet(event);
     }
-
     @Override
     public void onHitRobot(HitRobotEvent event) {
         super.onHitRobot(event);
     }
-
     @Override
     public void onHitWall(HitWallEvent e){
         if ( Math.abs (movement) > BASE_MOVEMENT ) {
             movement = BASE_MOVEMENT;
         }
     }
-
     @Override
     public void onRoundEnded(RoundEndedEvent event) {
         //path = new ArrayList<>();
     }
-
     @Override
     public void onRobotDeath(RobotDeathEvent event) {
         super.onRobotDeath(event);

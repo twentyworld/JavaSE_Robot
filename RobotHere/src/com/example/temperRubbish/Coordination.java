@@ -55,6 +55,16 @@ public class Coordination {
         return true;
     }
 
+    public boolean similar(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Coordination that = (Coordination) o;
+
+        if (Math.abs(x-that.getX())>0.0005) return false;
+        if (Math.abs(y-that.getY())>0.0005) return false;
+        return true;
+    }
 
 
 

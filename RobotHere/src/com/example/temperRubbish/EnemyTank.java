@@ -58,7 +58,7 @@ public class EnemyTank {
 
         EnemyTank enemyTank = (EnemyTank) o;
 
-        if (Double.compare(enemyTank.headingRadians, headingRadians) != 0) return false;
+        //if (Double.compare(enemyTank.headingRadians, headingRadians) != 0) return false;
         if (Double.compare(enemyTank.velocity, velocity) != 0) return false;
         return coordination.equals(enemyTank.coordination);
     }
