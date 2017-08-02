@@ -21,7 +21,7 @@ public class TemperUtils {
      * 计算两点之间的距离。
      * @param coordination1
      * @param coordination2
-     * @return
+     * @return double
      */
     public static double calculateDistance(Coordination coordination1, Coordination coordination2){
         return Math.sqrt(Math.pow(coordination2.getX()-coordination1.getX(),2)+
@@ -30,9 +30,9 @@ public class TemperUtils {
 
     /**
      * 计算出向量，传入的是两个点的坐标。
-     * @param coordination1
-     * @param coordination2
-     * @return
+     * @param coordination1, 原坐标。坐标原点
+     * @param coordination2, 要检查的坐标
+     * @return 向量
      */
     //计算出向量，传入的是两个点的坐标。
     public static Point2D.Double calculateVector(Coordination coordination1, Coordination coordination2){
@@ -47,8 +47,9 @@ public class TemperUtils {
 //    }
     /**
      * 计算出向量的角度。
+     * 结果在-pi到pi之间
      */
-    public static double calculateVectorIntersectionAngle(Point2D.Double point){
+    public static double calculateVectorIntersectionRadian(Point2D.Double point){
         double radian = Math.acos(point.x/Math.sqrt(Math.pow(point.x,2)+Math.pow(point.y,2)));
         if(point.y<0)
             radian = PI*2-radian;
@@ -122,8 +123,9 @@ public class TemperUtils {
      *                                   |                                                    <br/>
      *                                   |                                                    <br/>
      *
-     *转换象限角度到绝对角度。radian角度<br/>
+     *<br/>
      */
+    //转换象限角度到绝对角度。radian角度
     public static double translateQuadrantToHeadingRadian(double radian){
         //先规约到-PI到PI
         radian = constrainRadianFromNegativePItoPI(radian);
@@ -139,7 +141,6 @@ public class TemperUtils {
         else if (radian ==PI) radian = 3*PI/2;
         return radian;
     }
-
 
     /**
      * 检查点是否还在区域内部<br/>

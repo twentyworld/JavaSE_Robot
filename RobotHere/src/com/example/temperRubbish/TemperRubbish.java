@@ -121,7 +121,7 @@ public class TemperRubbish extends AdvancedRobot {
         Point2D.Double predictVector = TemperUtils.calculateVector (new Coordination (getX (),getY ()),predictCoordination);
         //System.out.println (predictVector+"：回传的预测向量");
         //向量转角度
-        double radian = TemperUtils.calculateVectorIntersectionAngle (predictVector);
+        double radian = TemperUtils.calculateVectorIntersectionRadian(predictVector);
         //System.out.println (radian+"向量的现象角度");
         radian = TemperUtils.constrainRadianFromNegativePItoPI(radian);
         //转成绝对角度
