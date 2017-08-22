@@ -1,6 +1,8 @@
 package com.example.temperRubbish;
 
 import com.example.temperRubbish.Util.TemperUtils;
+import com.example.temperRubbish.entity.Coordination;
+import com.example.temperRubbish.entity.EnemyTank;
 import robocode.*;
 import robocode.util.Utils;
 
@@ -24,6 +26,7 @@ public class TemperRubbish extends AdvancedRobot {
     private double bulletEnergy;
     private static double movement ;
 
+    private boolean isEnemyShot = false;
     //move
     private static final double BASE_MOVEMENT = 300;
     private static final double BASE_TURN = Math.PI / 3;
@@ -38,7 +41,7 @@ public class TemperRubbish extends AdvancedRobot {
      *              而且这个预测直线和圆周的过程最大的特点是，真的需要大量运算，都怪数值分析学得不好，感觉需要补补血了。<br/>
      * 2.终极目标是查找周期规律或者差值周期规律，查找周期规律的话，可以做到，但是差值规律比较复杂，还在找数学公式。<br/>
      */
-    private List<EnemyTank> path = new ArrayList<>();
+    private static List<EnemyTank> path = new ArrayList<>();
 
 
     @Override
@@ -47,17 +50,54 @@ public class TemperRubbish extends AdvancedRobot {
         setAdjustRadarForRobotTurn(true);
         setAdjustRadarForGunTurn (true);
         setColor();
-        movement = Double.POSITIVE_INFINITY;
+        movement = 200;
         setTurnRadarRight(400);
 
         do{
             //System.out.println("scan");
             execute();
             //scan();
-            if(getDistanceRemaining()==0){
-                setAhead(movement = -movement);
-                setTurnRightRadians(BASE_TURN);
+            if(path.size()>2&&path.get(path.size()-1).getEnergy()!=path.get(path.size()-2).getEnergy()){
+                System.out.println("发射了子弹");
+                isEnemyShot = true;
             }
+
+//            if(getDistanceRemaining()==0){
+//                setAhead(movement = -movement);
+//                setTurnRightRadians(BASE_TURN);
+//            }
+
+            if(getDistanceRemaining()==0){
+                if (isEnemyShot){
+                    setAhead(movement);
+                    double degreeRadian =
+                            TemperUtils.calculateVectorIntersectionRadian(
+                                    TemperUtils.calculateVector(
+                                            new Coordination(getX(),getY()),
+                                            path.get(path.size()-1).getCoordination()
+                                    )
+                            );
+                    setTurnRightRadians(degreeRadian+Math.PI/2-getHeadingRadians());
+                }
+                isEnemyShot = false;
+            }else {
+                if (isEnemyShot){
+                    setAhead(movement);
+                    double degreeRadian =
+                            TemperUtils.calculateVectorIntersectionRadian(
+                                    TemperUtils.calculateVector(
+                                            new Coordination(getX(),getY()),
+                                            path.get(path.size()-1).getCoordination()
+                                    )
+                            );
+                    setTurnRightRadians(degreeRadian+Math.PI/2-getHeadingRadians());
+                }
+                isEnemyShot = false;
+            }
+
+
+
+
         }while (true);
     }
     //*****************************************************************************************************************
@@ -73,6 +113,7 @@ public class TemperRubbish extends AdvancedRobot {
         System.out.println("track");
         trackEnemyTank();
         record (enemyTank);
+        System.out.println(path.size());
         //setTurnRightRadians(PathConfigration.configPath(new Coordination(getX(),getY()),this));
 
        // if(configPath(new Coordination(getX(),getY()))) movement = -movement;
@@ -162,10 +203,10 @@ public class TemperRubbish extends AdvancedRobot {
             path.remove (0);
         path.add (enemyTank);
     }
-    //**********************打赢鑫哥stable的终极利器，调整power值。鑫哥stable爆炸消耗能量，耗死他。************************
+    //**********************打赢stable的终极利器，调整power值。stable爆炸消耗能量************************
     //calculate the power
-    public int getPower(double distance){
-        int power = Math.min(Math.min(3,1000/(int)distance),(int)getEnergy()/3);
+    public double getPower(double distance){
+        double power = Math.min(Math.min(2.5,1000/distance),getEnergy()/3);
         bulletEnergy = power;
         bulletSpeed = Rules.getBulletSpeed(power);
         return power;
@@ -182,7 +223,7 @@ public class TemperRubbish extends AdvancedRobot {
 
     @Override
     public void onDeath(DeathEvent event) {
-        super.onDeath(event);
+        setTurnRadarRight(400);
     }
 
     @Override
@@ -200,9 +241,7 @@ public class TemperRubbish extends AdvancedRobot {
     }
     @Override
     public void onHitWall(HitWallEvent e){
-        if ( Math.abs (movement) > BASE_MOVEMENT ) {
-            movement = BASE_MOVEMENT;
-        }
+        movement = -movement;
     }
     @Override
     public void onRoundEnded(RoundEndedEvent event) {
@@ -210,7 +249,6 @@ public class TemperRubbish extends AdvancedRobot {
     }
     @Override
     public void onRobotDeath(RobotDeathEvent event) {
-        super.onRobotDeath(event);
+        setTurnRadarRight(400);
     }
-
 }

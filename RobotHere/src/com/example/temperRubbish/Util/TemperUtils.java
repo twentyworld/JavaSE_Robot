@@ -1,8 +1,6 @@
 package com.example.temperRubbish.Util;
 
 import com.example.temperRubbish.Coordination;
-import robocode.AdvancedRobot;
-import robocode.ScannedRobotEvent;
 
 import java.awt.geom.Point2D;
 
@@ -158,6 +156,5 @@ public class TemperUtils {
             return false;
         return true;
     }
-
 
 }

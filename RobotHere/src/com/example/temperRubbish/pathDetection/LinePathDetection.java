@@ -2,7 +2,8 @@ package com.example.temperRubbish.pathDetection;
 
 import com.example.temperRubbish.*;
 import com.example.temperRubbish.Util.TemperUtils;
-import org.omg.CORBA.MARSHAL;
+import com.example.temperRubbish.entity.Coordination;
+import com.example.temperRubbish.entity.EnemyTank;
 
 import java.util.List;
 
@@ -14,8 +15,6 @@ import java.util.List;
  * from win.
  */
 public class LinePathDetection extends PathDetection {
-    int a,b,c;
-
 
     @Override
     public Coordination predictPath(List<EnemyTank> path, TemperRubbish robot) {
@@ -58,7 +57,7 @@ public class LinePathDetection extends PathDetection {
         double mostMatchedTime = 200.00d;
         Coordination goalCoordination;
         double time = 0;
-        for(double t = 1; t < 150; t=t+0.5) {
+        for(double t = 1; t < 150; t=t+0.1) {
             goalCoordination = getCoordinationByTime(path,t);
             if(!TemperUtils.isUnderArea(goalCoordination)) continue;
             //System.out.println(t);
@@ -72,11 +71,11 @@ public class LinePathDetection extends PathDetection {
             }
             //mostMatchedTime = mostMatchedTime<(Math.abs(distance/speed-t))?(Math.abs(distance/speed-t)):mostMatchedTime;
             //System.out.println(mostMatchedTime);
-            if(mostMatchedTime<0.005)
+            if(mostMatchedTime<0.001)
                 return time;
         }
         //System.out.println(time+"返回的时间点。");
-        if (mostMatchedTime<0.1) return time;
+        if (mostMatchedTime<0.05) return time;
         return -1;
     }
 

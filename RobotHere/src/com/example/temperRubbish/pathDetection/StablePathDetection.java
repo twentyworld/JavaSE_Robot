@@ -1,10 +1,9 @@
 package com.example.temperRubbish.pathDetection;
 
-import com.example.temperRubbish.Coordination;
-import com.example.temperRubbish.EnemyTank;
+import com.example.temperRubbish.entity.Coordination;
+import com.example.temperRubbish.entity.EnemyTank;
 import com.example.temperRubbish.PathDetection;
 import com.example.temperRubbish.TemperRubbish;
-import robocode.AdvancedRobot;
 
 import java.util.List;
 
