@@ -30,6 +30,7 @@ public class TemperRubbish extends AdvancedRobot {
     //move
     private static final double BASE_MOVEMENT = 300;
     private static final double BASE_TURN = Math.PI / 3;
+    private static double BASE_HEADING ;
     //static Coordination maxCoordination = new Coordination(TemperUtils.WIDTH, TemperUtils.HEIGHT);
 
     //here is about the pattern match
@@ -169,13 +170,11 @@ public class TemperRubbish extends AdvancedRobot {
     }
 
     public boolean configPath(Coordination coordination){
-        double lowestXaxis = 50;
-        double lowestYaxis = 50;
-        double largestXaxis = TemperUtils.WIDTH-50;
-        double highestYaxis = TemperUtils.HEIGHT-40;
-        if(coordination.getX()>lowestXaxis&&coordination.getX()<largestXaxis&&coordination.getY()>lowestYaxis&&coordination.getY()<highestYaxis)
-            return false;
-        else
+        double lowestXaxis = 100;
+        double lowestYaxis = 100;
+        double largestXaxis = TemperUtils.WIDTH-100;
+        double highestYaxis = TemperUtils.HEIGHT-100;
+
             return true;//TemperUtils.constrainRadianFromZeroToDoublePI(rubbish.getHeadingRadians()+Math.PI);
     }
 
@@ -220,6 +219,10 @@ public class TemperRubbish extends AdvancedRobot {
 //        this.maxCoordination = maxCoordination;
 //    }
 
+    /**
+     * 保持一直停留在安全区域，这里设置的是四面各留100码作为缓冲。
+     * 如果过警戒线，就专项以保证一直停留在安全区域内。返回的是radian,返回的是向右转的角度。
+     */
 
     @Override
     public void onDeath(DeathEvent event) {
