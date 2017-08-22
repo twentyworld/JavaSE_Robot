@@ -1,4 +1,4 @@
-package com.example.temperRubbish;
+package com.example.temperRubbish.entity;
 
 import robocode.AdvancedRobot;
 import robocode.ScannedRobotEvent;
@@ -20,7 +20,7 @@ public class EnemyTank {
     private double energy;
 
     //got everything done
-    void generate(ScannedRobotEvent event, AdvancedRobot self){
+    public void generate(ScannedRobotEvent event, AdvancedRobot self){
         headingRadians = event.getHeadingRadians();
         bearingRadians = event.getBearingRadians();
         //网上获取到的运算公式 https://wenku.baidu.com/view/41fb6a8908a1284ac850437f.html

@@ -1,4 +1,4 @@
-package com.example.temperRubbish;
+package com.example.temperRubbish.entity;
 
 import robocode.util.Utils;
 

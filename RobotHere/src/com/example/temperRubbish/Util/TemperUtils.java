@@ -1,6 +1,6 @@
 package com.example.temperRubbish.Util;
 
-import com.example.temperRubbish.Coordination;
+import com.example.temperRubbish.entity.Coordination;
 
 import java.awt.geom.Point2D;
 

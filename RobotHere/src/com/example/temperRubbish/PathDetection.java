@@ -1,10 +1,11 @@
 package com.example.temperRubbish;
 
+import com.example.temperRubbish.entity.Coordination;
+import com.example.temperRubbish.entity.EnemyTank;
 import com.example.temperRubbish.pathDetection.LinePathDetection;
 import com.example.temperRubbish.pathDetection.RegularPathDetection;
 import com.example.temperRubbish.pathDetection.RoundPathDetection;
 import com.example.temperRubbish.pathDetection.StablePathDetection;
-import robocode.AdvancedRobot;
 
 import java.util.List;
 
