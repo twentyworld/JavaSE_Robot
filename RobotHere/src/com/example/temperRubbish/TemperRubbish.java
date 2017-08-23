@@ -28,8 +28,8 @@ public class TemperRubbish extends AdvancedRobot {
 
     private boolean isEnemyShot = false;
     //move
-    private static final double BASE_MOVEMENT = 300;
-    private static final double BASE_TURN = Math.PI / 3;
+    private static final double BASE_MOVEMENT = 200;
+    private static final double BASE_TURN = Math.PI / 1.5;
     private static double BASE_HEADING ;
     //static Coordination maxCoordination = new Coordination(TemperUtils.WIDTH, TemperUtils.HEIGHT);
 
@@ -43,40 +43,20 @@ public class TemperRubbish extends AdvancedRobot {
      * 2.终极目标是查找周期规律或者差值周期规律，查找周期规律的话，可以做到，但是差值规律比较复杂，还在找数学公式。<br/>
      */
     private static List<EnemyTank> path = new ArrayList<>();
-
-
     @Override
     public void run(){
         setAdjustGunForRobotTurn (true);
         setAdjustRadarForRobotTurn(true);
         setAdjustRadarForGunTurn (true);
         setColor();
-        movement = 120;
+        movement =  Double.POSITIVE_INFINITY;
         setTurnRadarRight(400);
-
         do{
-            execute();
-            if(path.size()>2&&path.get(path.size()-1).getEnergy()!=path.get(path.size()-2).getEnergy()){
-                System.out.println("发射了子弹");
-                isEnemyShot = true;
+            scan();
+            if(getDistanceRemaining()==0){
+                setAhead(movement = -movement);
+                setTurnRightRadians(BASE_TURN);
             }
-//            if(getDistanceRemaining()==0){
-//                setAhead(movement = -movement);
-//                setTurnRightRadians(BASE_TURN);
-//            }
-
-            //尝试性圆周摆动。但凡敌方坦克发射子弹，就开始运动。以期待达到最佳效果。
-            if (isEnemyShot){
-                setMove();
-
-                if (getDistanceRemaining()==0)
-                    isEnemyShot = false;
-            }
-
-
-
-
-
         }while (true);
     }
     //*****************************************************************************************************************
@@ -89,43 +69,22 @@ public class TemperRubbish extends AdvancedRobot {
     public void onScannedRobot(ScannedRobotEvent event) {
         enemyTank = new EnemyTank ();
         enemyTank.generate(event,this);
-        System.out.println("track");
         trackEnemyTank();
         record (enemyTank);
-        System.out.println(path.size());
-        //setTurnRightRadians(PathConfigration.configPath(new Coordination(getX(),getY()),this));
-
-       // if(configPath(new Coordination(getX(),getY()))) movement = -movement;
-        //turnLeftRadians(PathConfigration.configPath(new Coordination(getX(),getY()),this));
-        //预测位置
-        //调整枪口位置。
-
-        //System.out.println("执行到了-1的地点：");
         double gunTurn ;
         Coordination predictCoordination = null;
         PathDetection detection = null;
-        //detection = PathDetection.getPathDetection (path);
         if((detection = PathDetection.getPathDetection (path)) != null)
             predictCoordination = detection.predictPath (path,this);
-        //System.out.println("执行到了0的地点：");
-
         else{
             predictCoordination = enemyTank.getCoordination();
             System.out.println("什么都没检测到！");
         }
-
-        //System.out.println(predictCoordination+"执行到了这个地点！");
-        //System.out.println(predictCoordination == null);
-        //System.out.println(TemperUtils.isUnderArea(predictCoordination));
         if(TemperUtils.isUnderArea(predictCoordination)){
-            //System.out.println("执行到了1的地点：");
             gunTurn = getGunRadianByPrediction(predictCoordination);
-            //System.out.println("执行到了2的地点：");
             if(getEnergy()>2)
                 setFire(getPower(enemyTank.getDistance()));
-            //System.out.println("执行到了3的地点：");
             setTurnGunRightRadians(gunTurn);
-            //System.out.println("执行到了4的地点：");
         }
     }
 
@@ -219,19 +178,6 @@ public class TemperRubbish extends AdvancedRobot {
         return power;
     }
 
-//    public Coordination getMaxCoordination() {
-//        return maxCoordination;
-//    }
-
-//    public void setMaxCoordination(Coordination maxCoordination) {
-//        this.maxCoordination = maxCoordination;
-//    }
-
-    /**
-     * 保持一直停留在安全区域，这里设置的是四面各留100码作为缓冲。
-     * 如果过警戒线，就专项以保证一直停留在安全区域内。返回的是radian,返回的是向右转的角度。
-     */
-
     @Override
     public void onDeath(DeathEvent event) {
         setTurnRadarRight(400);
@@ -252,7 +198,9 @@ public class TemperRubbish extends AdvancedRobot {
     }
     @Override
     public void onHitWall(HitWallEvent e){
-        movement = -movement;
+        if ( Math.abs (movement) > BASE_MOVEMENT ) {
+            movement = BASE_MOVEMENT;
+        }
     }
     @Override
     public void onRoundEnded(RoundEndedEvent event) {
