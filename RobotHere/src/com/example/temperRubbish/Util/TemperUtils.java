@@ -47,7 +47,7 @@ public class TemperUtils {
 //    }
     /**
      * 计算出向量的角度。
-     * 结果在-pi到pi之间
+     * 结果在0到2pi之间
      */
     public static double calculateVectorIntersectionRadian(Point2D.Double point){
         double radian = Math.acos(point.x/Math.sqrt(Math.pow(point.x,2)+Math.pow(point.y,2)));
@@ -85,7 +85,7 @@ public class TemperUtils {
         return radian;
     }
     /**
-     * 约束角度，约束到-PI到PI之间.=====》主要是为了cosA的角度问题的规约。
+     * 约束角度，约束到0到2PI之间.=====》主要是为了cosA的角度问题的规约。
      * @param radian
      * @return
      */

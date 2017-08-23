@@ -51,50 +51,28 @@ public class TemperRubbish extends AdvancedRobot {
         setAdjustRadarForRobotTurn(true);
         setAdjustRadarForGunTurn (true);
         setColor();
-        movement = 200;
+        movement = 120;
         setTurnRadarRight(400);
 
         do{
-            //System.out.println("scan");
             execute();
-            //scan();
             if(path.size()>2&&path.get(path.size()-1).getEnergy()!=path.get(path.size()-2).getEnergy()){
                 System.out.println("发射了子弹");
                 isEnemyShot = true;
             }
-
 //            if(getDistanceRemaining()==0){
 //                setAhead(movement = -movement);
 //                setTurnRightRadians(BASE_TURN);
 //            }
 
-            if(getDistanceRemaining()==0){
-                if (isEnemyShot){
-                    setAhead(movement);
-                    double degreeRadian =
-                            TemperUtils.calculateVectorIntersectionRadian(
-                                    TemperUtils.calculateVector(
-                                            new Coordination(getX(),getY()),
-                                            path.get(path.size()-1).getCoordination()
-                                    )
-                            );
-                    setTurnRightRadians(degreeRadian+Math.PI/2-getHeadingRadians());
-                }
-                isEnemyShot = false;
-            }else {
-                if (isEnemyShot){
-                    setAhead(movement);
-                    double degreeRadian =
-                            TemperUtils.calculateVectorIntersectionRadian(
-                                    TemperUtils.calculateVector(
-                                            new Coordination(getX(),getY()),
-                                            path.get(path.size()-1).getCoordination()
-                                    )
-                            );
-                    setTurnRightRadians(degreeRadian+Math.PI/2-getHeadingRadians());
-                }
-                isEnemyShot = false;
+            //尝试性圆周摆动。但凡敌方坦克发射子弹，就开始运动。以期待达到最佳效果。
+            if (isEnemyShot){
+                setMove();
+
+                if (getDistanceRemaining()==0)
+                    isEnemyShot = false;
             }
+
 
 
 
@@ -180,6 +158,36 @@ public class TemperRubbish extends AdvancedRobot {
 
     //*****************************************************************************************************************
 
+    /**
+     * 定义了如何走
+     */
+    private void setMove(){
+        if (path.size()<2)
+            return;
+        //获取双方的坦克形成的夹角。0-2pi
+        double enemyRadian = TemperUtils.calculateVectorIntersectionRadian(
+                TemperUtils.calculateVector(new Coordination(getX(),getY()),path.get(path.size()-1).getCoordination()));
+        double headingEnemyRadian = TemperUtils.translateQuadrantToHeadingRadian(enemyRadian);
+
+        //获取tank和原点之间形成的夹角。0-2pi
+        double enemyRadianTemp = TemperUtils.calculateVectorIntersectionRadian(
+                TemperUtils.calculateVector(new Coordination(getX(),getY()),new Coordination(400,300)));
+        double headingEnemyRadianTemp = TemperUtils.translateQuadrantToHeadingRadian(enemyRadianTemp);
+        double figureRadian;
+        if (Math.abs(headingEnemyRadianTemp-(headingEnemyRadian-Math.PI/2))<Math.PI/2)
+            figureRadian = headingEnemyRadian-Math.PI/2;
+        else
+            figureRadian = headingEnemyRadian+Math.PI/2;
+
+        double turnRadian = TemperUtils.constrainRadianFromZeroToDoublePI(figureRadian-getHeadingRadians());
+
+        if(turnRadian<Math.PI)
+            setTurnRightRadians(turnRadian);
+        else
+            setTurnLeftRadians(turnRadian);
+        setAhead(movement);
+
+    }
 
     /**
      * 跟踪地方坦克的位置。
