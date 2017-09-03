@@ -16,8 +16,7 @@ import java.util.List;
  * copy as you like, but with these word.<br/>
  * at last, The forza horizon 3 is really fun, buy is made, looking forward to driving together in the hurricane.<br/>
  *
- * 这几天的调参之旅充分认识到，
- * 参数的调整对结果的影响极其大，需要分解算法，然后针对不同的预测模式，搞新闻。
+ * 参数的调整对结果的影响极其大，需要分解算法，然后针对不同的预测模式，
  */
 public class TemperRubbish extends AdvancedRobot {
 
@@ -90,63 +89,16 @@ public class TemperRubbish extends AdvancedRobot {
 
     private double getGunRadianByPrediction(Coordination predictCoordination){
         double gunTurn;
-        //System.out.println (predictCoordination+"：回传的预测路径");
-        //向量
         Point2D.Double predictVector = TemperUtils.calculateVector (new Coordination (getX (),getY ()),predictCoordination);
-        //System.out.println (predictVector+"：回传的预测向量");
-        //向量转角度
         double radian = TemperUtils.calculateVectorIntersectionRadian(predictVector);
-        //System.out.println (radian+"向量的现象角度");
         radian = TemperUtils.constrainRadianFromNegativePItoPI(radian);
-        //转成绝对角度
         radian = TemperUtils.translateQuadrantToHeadingRadian(radian);
-        //System.out.println (radian+"敌方tank的绝对角度");
         gunTurn = radian - getGunHeadingRadians ();
-        //System.out.println(gunTurn+"旋转角度");
         return gunTurn;
-    }
-
-    public boolean configPath(Coordination coordination){
-        double lowestXaxis = 100;
-        double lowestYaxis = 100;
-        double largestXaxis = TemperUtils.WIDTH-100;
-        double highestYaxis = TemperUtils.HEIGHT-100;
-
-            return true;//TemperUtils.constrainRadianFromZeroToDoublePI(rubbish.getHeadingRadians()+Math.PI);
     }
 
     //*****************************************************************************************************************
 
-    /**
-     * 定义了如何走
-     */
-    private void setMove(){
-        if (path.size()<2)
-            return;
-        //获取双方的坦克形成的夹角。0-2pi
-        double enemyRadian = TemperUtils.calculateVectorIntersectionRadian(
-                TemperUtils.calculateVector(new Coordination(getX(),getY()),path.get(path.size()-1).getCoordination()));
-        double headingEnemyRadian = TemperUtils.translateQuadrantToHeadingRadian(enemyRadian);
-
-        //获取tank和原点之间形成的夹角。0-2pi
-        double enemyRadianTemp = TemperUtils.calculateVectorIntersectionRadian(
-                TemperUtils.calculateVector(new Coordination(getX(),getY()),new Coordination(400,300)));
-        double headingEnemyRadianTemp = TemperUtils.translateQuadrantToHeadingRadian(enemyRadianTemp);
-        double figureRadian;
-        if (Math.abs(headingEnemyRadianTemp-(headingEnemyRadian-Math.PI/2))<Math.PI/2)
-            figureRadian = headingEnemyRadian-Math.PI/2;
-        else
-            figureRadian = headingEnemyRadian+Math.PI/2;
-
-        double turnRadian = TemperUtils.constrainRadianFromZeroToDoublePI(figureRadian-getHeadingRadians());
-
-        if(turnRadian<Math.PI)
-            setTurnRightRadians(turnRadian);
-        else
-            setTurnLeftRadians(turnRadian);
-        setAhead(movement);
-
-    }
 
     /**
      * 跟踪地方坦克的位置。
